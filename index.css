@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+.body{
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 2rem;
+    background-image: url(images/background.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-color: #0f172a;
+    font-family: Inter;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.header{
+    box-sizing: border-box;
+    margin: 0;
+    background-color: rgba(15, 23, 42, 0.7);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 35px 5%;
+}
+
+.logo{
+    cursor: pointer;
+    max-width: 100%;
+    width: 265px;
+    height: auto;
+}
+
+.navigation{
+    li a {
+        font-family: Inter, bold;
+        font-weight: 700;
+        font-size: 1rem;
+        color: white;
+        text-decoration: none;
+    }
+}
+
+.navigation{
+    list-style: none;
+}
+
+.navigation li{
+    display: inline-block;
+    padding: 0px 20px;
+}
+
+.navigation li a{
+    transition: all 0.3s ease 0;
+}
+
+.navigation li a:hover{
+    text-shadow: 0 0 5px #ffffff, 0 0 10px #5ba19b, 0 0 20px #5ba19b;
+}
+
+.caption{
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 200;
+    text-align: center;
+    font-style: italic;
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-top: 10%;
+}
+
+.button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.button img{
+    max-width: 100%;
+    width: 180px;
+    height: auto;
+    cursor: pointer;
+    transition: filter 0.3s ease;
+}
+
+
+.button img:hover{
+    filter: drop-shadow(0 0 8px #5ba19b);
+}
