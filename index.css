@@ -9,12 +9,11 @@
     flex-direction: column;
     flex-wrap: wrap;
     gap: 2rem;
-    background-image: url('images/background.png') !important;
+    background-image: url('images/background.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
     background-attachment: fixed;
-    background-color: #0f172a;
     font-family: Inter;
     overflow: hidden;
     position: fixed;
