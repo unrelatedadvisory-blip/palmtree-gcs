@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="tentang.css" />
+    <head>
+        <title>GCS SWARM ROBOTICS SIMULATOR</title>
+    </head>
+
+    <body>
+        <div class="body">
+            <div class="header">
+                <div class="back">
+                    <a href="index.html">
+                        <img src="images/back.png" alt="BACK" class="back-icon" />
+                    </a>
+                </div>
+                <div class="logo">
+                    <img src="images/logo-w-text2.png"/>
+                </div>
+            </div>
+            <div class="caption">
+                <h1>SPESIFIKASI WEBSITE SIMULATOR</h1>
+                <div class="wadah-tabel-responsif">
+                    <table class="tabel-simulator">
+                        <thead>
+                            <tr>
+                                <th>KATEGORI</th>
+                                <th>NILAI SPESIFIKASI</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Sistem Arsitektur</td>
+                                <td>Web-based interactive simulator</td>
+                            </tr>
+                            <tr>
+                                <td>Konversi Skala Jarak</td>
+                                <td>1 meter : 5.0 pixel</td>
+                            </tr>
+                            <tr>
+                                <td>Simulasi Logika</td>
+                                <td>
+                                    <li>Pola rute misi robot dengan Boustrophedon Path</li>
+                                    <li>Pencegahan tabrakan dengan Dynamic Look-Ahead Position & Dot Product Angle Check</li>
+                                    <li>Mekanisme pengereman berbasis kurva 1.5 pangkat</li>
+                                    <li>Zona ambang batas antrean Stop: 38px = 13.88m / Queue: 85px = 31.04m</li>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Logika Baterai</td>
+                                <td>Auto Return-to-Launch (RTL) otomatis saat level baterai mencapai 20%</td>
+                            </tr>
+                            <tr>
+                                <td>Target Cakupan Area</td>
+                                <td>Luas lahan simulasi area 2 hektar perkebunan kelapa sawit</td>
+                            </tr>                            
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pembatas"></div>
+                <h5>SPESIFIKASI ROBOT LAWN MOWER</h5>
+                <div class="wadah-tabel-responsif2">
+                    <table class="tabel-simulator">
+                        <thead>
+                            <tr>
+                                <th>KATEGORI</th>
+                                <th>PARAMETER</th>
+                                <th>SPESIFIKASI</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td rowspan="2">Performa dan Kinematika Pergerakan</td>
+                                <td>Kecepatan memotong/Mowing speed</td>
+                                <td>0.35m/s (Fase pisau pemotong aktif)</td>
+                            </tr>
+                            <tr>
+                                <td>Kecepatan Transit/RTL Speed</td>
+                                <td>0.50m/s (Fase perjalanan menuju area misi dan kembali ke docking station)</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="3">Sistem Daya dan Baterai</td>
+                                <td>Kapasitas baterai</td>
+                                <td>20V/6Ah</td>
+                            </tr>
+                            <tr>
+                                <td>Durasi operasi maksimal</td>
+                                <td>4 jam (penggunaan penuh dalam kondisi operasional standar)</td>
+                            </tr>
+                            <tr>
+                                <td>Durasi pengisian daya</td>
+                                <td>1.5 jam (dari status pengisian ulang hingga batas aman operasi)</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="2">Konsumsi Daya Berbasis Fase</td>
+                                <td>Fase penyiangan (Mowing Phase)</td>
+                                <td>Rate pemakaian daya setara dengan pembalikan kapasitas baterai 100% dalam 8 jam operasi beban pisau (=0.00347%/s)</td>
+                            </tr>
+                            <tr>
+                                <td>Fase transit / RTL</td>
+                                <td>Rate pemakaian daya setara dengan pembalikan kapasitas baterai 100% dalam pergerakan tanpa pemotong (=0.00173%/s)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="footer">
+                    <h4>COPYRIGHT 2026</h4>
+                </div>
+            </div>
+        </div>
+        
+    </body>
+</html>

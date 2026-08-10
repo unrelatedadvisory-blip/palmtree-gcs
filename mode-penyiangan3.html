@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCS Swarm Robotics Simulator - Mode Penyiangan (High Battery Capacity)</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+        
+        ::-webkit-scrollbar{
+            width: 5px;
+            height: auto;
+        }
+
+        ::-webkit-scrollbar-track{
+            background: none;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb{
+            background-color: #222838;
+            border-radius: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover{
+            background-color: #3F475E;
+        }
+        
+        :root {
+            --bg-main: #070a13;
+            --bg-sidebar: #0d111b;
+            --bg-card: #111622;
+            --bg-input: #070a13;
+            --border-color: #1e2638;
+            --text-primary: #ffffff;
+            --text-muted: #64748b;
+            --cyan-accent: #00b4d8;
+            --green-accent: #10b981;
+            --orange-accent: #f59e0b;
+            --red-accent: #ef4444;
+        }
+
+        body {
+            font-family: Inter, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        .sidebar {
+            width: 320px;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            gap: 16px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        .sidebar img {
+            margin: 0;
+            width: 190px;
+            height: auto;
+        }
+
+        .system-mode-tag {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-top: 10px;
+            margin-bottom: 2px;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .input-box, select.input-box {
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-color);
+            color: #fff;
+            padding: 10px 12px;
+            border-radius: 6px;
+            width: 100%;
+            box-sizing: border-box;
+            font-weight: bold;
+        }
+
+        .time-factor-box {
+            background: rgba(0, 180, 216, 0.08);
+            border: 1px solid rgba(0, 180, 216, 0.3);
+            border-radius: 6px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .range-container {
+            border: 1px solid var(--border-color);
+            background-color: rgba(7, 10, 19, 0.5);
+            border-radius: 6px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .range-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-card);
+            padding: 8px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            border-left: 3px solid transparent;
+        }
+
+        .range-selectors {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .range-selectors select {
+            background: var(--bg-input);
+            color: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            padding: 3px 6px;
+        }
+
+        .control-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: auto;
+            padding-top: 10px;
+        }
+
+        .btn-ctrl {
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            color: #fff;
+            font-weight: bold;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background-color 0.2s, opacity 0.2s;
+            text-align: center;
+        }
+        
+        .btn-ctrl:disabled {
+            background-color: #1e2638 !important;
+            color: #475569;
+            cursor: not-allowed;
+            opacity: 0.4;
+        }
+
+        .btn-ctrl a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+        
+        #btnStart { background-color: var(--green-accent); }
+        #btnPause { background-color: var(--orange-accent); }
+        #btnRtl { background-color: var(--red-accent); }
+        #btnReset { background-color: #475569; }
+        #btnBack { background-color: #808080;}
+
+        .workspace {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-main);
+            box-sizing: border-box;
+            min-width: 0;
+        }
+
+        .map-area {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        canvas {
+            background-color: #D6D8CD;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.7);
+        }
+
+        .matrix-panel {
+            height: 230px;
+            border-top: 1px solid var(--border-color);
+            background-color: var(--bg-sidebar);
+            padding: 15px 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .matrix-header {
+            font-size: 0.72rem;
+            color: var(--cyan-accent);
+            font-weight: bold;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .matrix-grid {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .agent-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            width: 220px; 
+            flex-shrink: 0; 
+            padding: 12px;
+            box-sizing: border-box;
+            font-size: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 6px;
+        }
+
+        .agent-name {
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .agent-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .range-badge {
+            background-color: #005f73;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .battery-container {
+            margin-top: 2px;
+        }
+
+        .bar-bg {
+            background-color: var(--bg-input);
+            height: 6px;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background-color: var(--green-accent);
+            width: 100%;
+            transition: width 0.3s;
+        }
+
+        .card-status {
+            background-color: rgba(16, 185, 129, 0.08);
+            color: var(--green-accent);
+            text-align: center;
+            padding: 4px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.68rem;
+            margin-top: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-duration {
+            font-size: 0.68rem;
+            color: var(--cyan-accent);
+            text-align: center;
+            font-weight: bold;
+            background: rgba(0, 180, 216, 0.08);
+            padding: 3px;
+            border-radius: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .error-banner {
+            color: var(--red-accent);
+            font-size: 0.75rem;
+            font-weight: bold;
+            background: rgba(239, 68, 68, 0.1);
+            padding: 8px;
+            border-radius: 4px;
+            display: none;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="logo">
+            <img src="images/logo-w-text.png" alt="GCS SWARM ROBOTIC"/>
+        </div>
+        <div class="system-mode-tag">MODE PENYIANGAN</div>
+
+        <div class="time-factor-box">
+            <div class="section-label" style="color: var(--cyan-accent);">⚡ Kecepatan Simulasi (Time Scale):</div>
+            <select id="timeFactorSelect" class="input-box" onchange="updateTimeFactor()">
+                <option value="1">1x (Waktu Nyata Real-Time)</option>
+                <option value="10">10x Lebih Cepat</option>
+                <option value="30">30x Lebih Cepat</option>
+                <option value="60" selected>60x (1 Detik = 1 Menit)</option>
+                <option value="120">120x Super Fast Mode</option>
+            </select>
+        </div>
+
+        <div>
+            <div class="section-label">Jumlah Armada Robot:</div>
+            <input type="number" id="robotCount" class="input-box" value="1" min="1" max="10">
+        </div>
+
+        <div id="errorMsg" class="error-banner">
+            ⚠️ jumlah robot melebihi batas maksimum
+        </div>
+
+        <div id="gridAssignmentArea">
+            <div class="section-label">Rentang Kerja Petak Robot (Grid 3x2):</div>
+            <div id="assignmentInputs" class="range-container"></div>
+        </div>
+
+        <div class="control-buttons">
+            <div class="section-label">Mission Control</div>
+            <button class="btn-ctrl" id="btnStart" onclick="startSim()">START MISSION</button>
+            <button class="btn-ctrl" id="btnPause" onclick="togglePauseSim()" disabled>PAUSE SWARM</button>
+            <button class="btn-ctrl" id="btnRtl" onclick="rthSim()" disabled>FORCE RTL ALL</button>
+            <button class="btn-ctrl" id="btnReset" onclick="endSim()" disabled>RESET SIMULATOR</button>
+            <button class="btn-ctrl" id="btnBack"><a href="mode.html">KEMBALI</a></button>
+        </div>
+    </div>
+
+    <div class="workspace">
+        <div class="map-area">
+            <canvas id="fieldCanvas" width="1560" height="680"></canvas>
+        </div>
+
+        <div class="matrix-panel">
+            <div class="matrix-header"><span style="color:var(--cyan-accent); font-size:10px;">●</span> Real-Time Robot Performance Monitoring Matrix (High Capacity Battery: 150Ah)</div>
+            <div class="matrix-grid" id="matrixGrid"></div>
+        </div>
+    </div>
+
+<script>
+    const canvas = document.getElementById('fieldCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let animationId;
+    let currentState = 'IDLE';              
+    let lastTimeStamp = 0; 
+
+    // --- FAKTOR PERCEPATAN WAKTU (TIME SCALE) ---
+    let TIME_FACTOR = 60; 
+
+    function updateTimeFactor() {
+        const select = document.getElementById('timeFactorSelect');
+        TIME_FACTOR = parseFloat(select.value) || 1;
+    }
+
+    // --- PARAMETER SKALA & FISIK LAWN MOWER ---
+    const METERS_PER_PIXEL = 0.3652; 
+
+    // Kecepatan Mower Basal (m/s & px/s):
+    const SPEED_MOWING_PX = 0.35 / METERS_PER_PIXEL; 
+    const SPEED_TRANSIT_PX = 0.50 / METERS_PER_PIXEL; 
+
+    // =========================================================================
+    // UPDATE KAPASITAS BATERAI (DITINGKATKAN MENJADI 120 - 150 Ah)
+    // =========================================================================
+    // Bertahan hingga 8 Jam Operasional Penyiangan Aktif (100% / (8 Jam * 3600 dtk))
+    const BATT_DRAIN_MOWING = 100 / (8 * 3600); 
+    // Mode Transit hemat energi (bertahan hingga 16 Jam)
+    const BATT_DRAIN_TRANSIT = 100 / (16 * 3600); 
+
+    const SCALE_METER_TO_PX = 5.8; 
+    const TREE_SPACING_M = 9.0;    
+    const HORIZONTAL_SPACING = TREE_SPACING_M * SCALE_METER_TO_PX; 
+    const VERTICAL_SPACING = TREE_SPACING_M * Math.sin(Math.PI / 3) * SCALE_METER_TO_PX; 
+    const ROW_SHIFT = (TREE_SPACING_M / 2) * SCALE_METER_TO_PX; 
+
+    const gridStartX = 60; 
+    
+    const pWidth = (canvas.width - gridStartX) / 2;   
+    const pHeight = canvas.height / 3; 
+    const Corridor_Center = gridStartX + pWidth;
+
+    const M_CORRIDOR_LEFT = 45;
+    const M_CORRIDOR_CENTER = gridStartX + pWidth;
+    const M_CORRIDOR_RIGHT = canvas.width - 15;
+
+    const plotMapping = {
+        1: { r: 0, c: 0 }, 2: { r: 0, c: 1 }, 
+        3: { r: 1, c: 1 }, 4: { r: 1, c: 0 }, 
+        5: { r: 2, c: 0 }, 6: { r: 2, c: 1 }  
+    };
+
+    const robotProfiles = [
+        { id: "AGEN 01", color: '#ef4444' }, { id: "AGEN 02", color: '#38bdf8' },
+        { id: "AGEN 03", color: '#fbbf24' }, { id: "AGEN 04", color: '#ec4899' },
+        { id: "AGEN 05", color: '#a855f7' }, { id: "AGEN 06", color: '#06b6d4' }
+    ];
+
+    let activeRobots = []; 
+    const robotCountInput = document.getElementById('robotCount');
+    const errorMsg = document.getElementById('errorMsg');
+    const assignmentInputs = document.getElementById('assignmentInputs');
+    const matrixGrid = document.getElementById('matrixGrid');
+
+    let globalTreeYPositions = [];
+    let globalLaneYPositions = []; 
+
+    const palmImg = new Image();
+    let palmCanvas = null; 
+    let imgLoaded = false;
+
+    palmImg.src = '—Pngtree—palm tree top view for_9021337.jpg'; 
+
+    palmImg.onload = () => {
+        try {
+            palmCanvas = document.createElement('canvas');
+            palmCanvas.width = palmImg.width;
+            palmCanvas.height = palmImg.height;
+            const pCtx = palmCanvas.getContext('2d');
+            pCtx.drawImage(palmImg, 0, 0);
+            
+            const imgData = pCtx.getImageData(0, 0, palmCanvas.width, palmCanvas.height);
+            const data = imgData.data;
+            for (let i = 0; i < data.length; i += 4) {
+                if (data[i] < 25 && data[i+1] < 25 && data[i+2] < 25) {
+                    data[i+3] = 0; 
+                }
+            }
+            pCtx.putImageData(imgData, 0, 0);
+            imgLoaded = true;
+        } catch (e) {
+            imgLoaded = false; 
+        }
+    };
+
+    function calculateTreeYPositions() {
+        globalTreeYPositions = [];
+        let yStart = 45; 
+        while (yStart < canvas.height - 25) {
+            globalTreeYPositions.push(yStart);
+            yStart += VERTICAL_SPACING;
+        }
+
+        globalLaneYPositions = [];
+        if(globalTreeYPositions.length > 0) {
+            globalLaneYPositions.push(globalTreeYPositions[0] - (VERTICAL_SPACING / 2));
+        }
+        for (let i = 0; i < globalTreeYPositions.length - 1; i++) {
+            globalLaneYPositions.push(globalTreeYPositions[i] + (VERTICAL_SPACING / 2));
+        }
+        if(globalTreeYPositions.length > 0) {
+            globalLaneYPositions.push(globalTreeYPositions[globalTreeYPositions.length - 1] + (VERTICAL_SPACING / 2));
+        }
+        globalLaneYPositions = globalLaneYPositions.filter(y => y > 25 && y < canvas.height - 20);
+    }
+    calculateTreeYPositions();
+
+    function updateRobotConfigUI() {
+        const count = parseInt(robotCountInput.value) || 0;
+        if (count > 6) {
+            errorMsg.style.display = 'block';
+            document.getElementById('btnStart').disabled = true;
+            assignmentInputs.innerHTML = '';
+            return;
+        } else {
+            errorMsg.style.display = 'none';
+            if (currentState === 'IDLE' || currentState === 'ENDED') {
+                document.getElementById('btnStart').disabled = false;
+            }
+        }
+
+        let savedChoices = [];
+        for (let i = 1; i <= 6; i++) {
+            let startEl = document.getElementById(`startP${i}`);
+            let endEl = document.getElementById(`endP${i}`);
+            savedChoices.push({
+                start: startEl ? startEl.value : `${i}`,
+                end: endEl ? endEl.value : `${i}`
+            });
+        }
+
+        let htmlContent = '';
+        for (let i = 0; i < count; i++) {
+            let optionsHTML = '';
+            for (let p = 1; p <= 6; p++) {
+                optionsHTML += `<option value="${p}">P-0${p}</option>`;
+            }
+
+            htmlContent += `
+                <div class="range-row" style="border-left-color: ${robotProfiles[i].color}">
+                    <div class="agent-name" style="color: #fff">
+                        <span class="agent-dot" style="background-color: ${robotProfiles[i].color}"></span>
+                        ROBOT ${robotProfiles[i].id}
+                    </div>
+                    <div class="range-selectors">
+                        <label style="color:var(--text-muted); font-size:11px;">Dari:</label>
+                        <select id="startP${i+1}">${optionsHTML}</select>
+                        <label style="color:var(--text-muted); font-size:11px;">S/D:</label>
+                        <select id="endP${i+1}">${optionsHTML}</select>
+                    </div>
+                </div>
+            `;
+        }
+        
+        assignmentInputs.innerHTML = htmlContent;
+
+        for (let i = 0; i < count; i++) {
+            let choice = savedChoices[i] || { start: `${i+1}`, end: `${i+1}` };
+            let startEl = document.getElementById(`startP${i+1}`);
+            let endEl = document.getElementById(`endP${i+1}`);
+            if (startEl) startEl.value = choice.start;
+            if (endEl) endEl.value = choice.end;
+        }
+        
+        buildTelemetryCards();
+    }
+    
+    robotCountInput.addEventListener('input', () => {
+        updateRobotConfigUI();
+    });
+
+    function generateGridPaths() {
+        activeRobots.forEach((robot, index) => {
+            robot.waypoints = [];
+
+            const startEl = document.getElementById(`startP${index+1}`);
+            const endEl = document.getElementById(`endP${index+1}`);
+            
+            let startPlot = startEl ? parseInt(startEl.value) : (index + 1);
+            let endPlot = endEl ? parseInt(endEl.value) : (index + 1);
+            if (isNaN(startPlot)) startPlot = index + 1;
+            if (isNaN(endPlot)) endPlot = index + 1;
+
+            if (startPlot > endPlot) { let temp = startPlot; startPlot = endPlot; endPlot = temp; }
+
+            robot.assignedRangeStr = startPlot === endPlot ? `P: ${startPlot}-${startPlot}` : `P: ${startPlot}-${endPlot}`;
+
+            let plotsToVisit = [];
+            for (let p = startPlot; p <= endPlot; p++) { plotsToVisit.push(p); }
+
+            let cx = 24;
+            let cy = robot.hy;
+
+            robot.waypoints.push({ x: M_CORRIDOR_LEFT, y: cy });
+            cx = M_CORRIDOR_LEFT;
+
+            let treesInPlots = [];
+            plotsToVisit.forEach((p) => {
+                let r = plotMapping[p].r;
+                let c = plotMapping[p].c;
+                let minYBound = r * pHeight;
+                let maxYBound = (r + 1) * pHeight;
+                
+                globalTreeYPositions.forEach((finalY, rowIndex) => {
+                    if (finalY >= minYBound && finalY <= maxYBound) {
+                        let shiftX = (rowIndex % 2 === 1) ? ROW_SHIFT : 0;
+                        if (c === 0) {
+                            let xLeftStart = gridStartX + 20;
+                            let xLeftEnd = Corridor_Center - 20;
+                            for (let x = xLeftStart - HORIZONTAL_SPACING; x < xLeftEnd + HORIZONTAL_SPACING; x += HORIZONTAL_SPACING) {
+                                let finalX = x + shiftX;
+                                if (finalX >= xLeftStart && finalX <= xLeftEnd) {
+                                    treesInPlots.push({ x: finalX, y: finalY });
+                                }
+                            }
+                        } else {
+                            let xRightStart = Corridor_Center + 20;
+                            let xRightEnd = canvas.width - 20;
+                            for (let x = xRightStart - HORIZONTAL_SPACING; x < xRightEnd + HORIZONTAL_SPACING; x += HORIZONTAL_SPACING) {
+                                let finalX = x + shiftX;
+                                if (finalX >= xRightStart && finalX <= xRightEnd) {
+                                    treesInPlots.push({ x: finalX, y: finalY });
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+
+            let rows = {};
+            treesInPlots.forEach(t => {
+                if (!rows[t.y]) rows[t.y] = [];
+                if (!rows[t.y].some(exist => Math.abs(exist.x - t.x) < 1)) {
+                    rows[t.y].push(t);
+                }
+            });
+
+            let yKeys = Object.keys(rows).sort((a,b) => Number(a) - Number(b));
+            
+            yKeys.forEach((y, idx) => {
+                let rowTrees = rows[y].sort((a,b) => a.x - b.x);
+                if (idx % 2 === 1) rowTrees.reverse(); 
+
+                if (rowTrees.length === 0) return;
+
+                let laneY = globalLaneYPositions[0];
+                let minDiff = Math.abs(Number(y) - laneY);
+                globalLaneYPositions.forEach(ly => {
+                    if (Math.abs(Number(y) - ly) < minDiff) {
+                        minDiff = Math.abs(Number(y) - ly);
+                        laneY = ly;
+                    }
+                });
+
+                let startCorridorX, endCorridorX;
+                if (idx % 2 === 0) {
+                    startCorridorX = (rowTrees[0].x < Corridor_Center) ? M_CORRIDOR_LEFT : M_CORRIDOR_CENTER;
+                    endCorridorX = (rowTrees[rowTrees.length - 1].x < Corridor_Center) ? M_CORRIDOR_CENTER : M_CORRIDOR_RIGHT;
+                } else {
+                    startCorridorX = (rowTrees[0].x > Corridor_Center) ? M_CORRIDOR_RIGHT : M_CORRIDOR_CENTER;
+                    endCorridorX = (rowTrees[rowTrees.length - 1].x > Corridor_Center) ? M_CORRIDOR_CENTER : M_CORRIDOR_LEFT;
+                }
+
+                if (cy !== laneY) {
+                    robot.waypoints.push({ x: cx, y: laneY });
+                    cy = laneY;
+                }
+                if (cx !== startCorridorX) {
+                    robot.waypoints.push({ x: startCorridorX, y: laneY });
+                    cx = startCorridorX;
+                }
+
+                rowTrees.forEach((tree) => {
+                    robot.waypoints.push({ x: tree.x, y: laneY });
+                    cx = tree.x;
+
+                    let startAngle = (laneY < tree.y) ? -Math.PI / 2 : Math.PI / 2;
+                    let radiusPutaran = 18; 
+
+                    for (let a = 0; a <= Math.PI * 2; a += Math.PI / 3) {
+                        let angle = startAngle + a;
+                        robot.waypoints.push({
+                            x: tree.x + radiusPutaran * Math.cos(angle),
+                            y: tree.y + radiusPutaran * Math.sin(angle)
+                        });
+                    }
+
+                    robot.waypoints.push({ x: tree.x, y: laneY });
+                    cx = tree.x;
+                    cy = laneY;
+                });
+
+                robot.waypoints.push({ x: endCorridorX, y: laneY });
+                cx = endCorridorX;
+                cy = laneY;
+            });
+
+            if (robot.waypoints.length > 0) {
+                let lastWp = robot.waypoints[robot.waypoints.length - 1];
+                if (lastWp.x !== M_CORRIDOR_LEFT) {
+                    robot.waypoints.push({ x: M_CORRIDOR_LEFT, y: lastWp.y });
+                }
+                let finalWp = robot.waypoints[robot.waypoints.length - 1];
+                if (finalWp.y !== robot.hy) {
+                    robot.waypoints.push({ x: M_CORRIDOR_LEFT, y: robot.hy });
+                }
+                robot.waypoints.push({ x: 24, y: robot.hy });
+            }
+
+            robot.wpIndex = 0;
+
+            let totalPathPixels = 0;
+            for (let i = 0; i < robot.waypoints.length - 1; i++) {
+                totalPathPixels += Math.hypot(robot.waypoints[i+1].x - robot.waypoints[i].x, robot.waypoints[i+1].y - robot.waypoints[i].y);
+            }
+            robot.totalDistanceMeters = totalPathPixels * METERS_PER_PIXEL;
+            robot.estimatedDurationSec = totalPathPixels / SPEED_MOWING_PX;
+        });
+    }
+
+    function formatTime(seconds) {
+        let mins = Math.floor(seconds / 60);
+        let secs = Math.floor(seconds % 60);
+        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    function getHumanStatus(state, robot) {
+        if (!robot) return 'STANDBY / INACTIVE';
+        if (robot.isLowBatteryRTL) return 'LOW BATT - DOCKING';
+        if (state === 'PAUSED') return 'PAUSED';
+        if (state === 'IDLE') return 'STANDBY / INACTIVE';
+        if (robot.wpIndex >= robot.waypoints.length && robot.waypoints.length > 0) return 'FINISHED';
+        if (state === 'ENDED') return 'MISSION COMPLETED';
+        if (robot.isWaiting) return 'QUEUE / WAITING';
+        if (robot.isQueuing) return 'QUEUING / FOLLOWING';
+        if (state === 'RUNNING') return 'EXECUTING MISSION';
+        if (state === 'RTH') return 'FORCE RTL';
+        return state; 
+    }
+
+    function buildTelemetryCards() {
+        matrixGrid.innerHTML = '';
+        
+        for (let i = 0; i < 6; i++) {
+            let robot = activeRobots[i];
+            let color = robotProfiles[i].color;
+            let range = "N/A";
+            let coordText = `STAGING: Slot ${i+1}`;
+            let batteryVal = 100;
+            let statusText = getHumanStatus(currentState, robot);
+            let durationText = "EST / DURATION: 00:00 / 00:00";
+
+            if (robot) {
+                range = robot.assignedRangeStr;
+                coordText = `COORD: ${Math.round(robot.x * METERS_PER_PIXEL)}m X, ${Math.round(robot.y * METERS_PER_PIXEL)}m Y`;
+                batteryVal = robot.battery;
+                durationText = `EST / DUR: ${formatTime(robot.estimatedDurationSec)} / ${formatTime(robot.durationSeconds)}`;
+            } else {
+                color = "#475569"; 
+                statusText = "STANDBY / INACTIVE";
+            }
+
+            let cardStyle = robot ? `border-top: 2px solid ${color};` : `border-top: 2px solid ${color}; opacity: 0.6;`;
+
+            matrixGrid.innerHTML += `
+                <div class="agent-card" id="card-${i}" style="${cardStyle}">
+                    <div class="card-top">
+                        <div class="agent-name" style="color: ${color}">
+                            <span class="agent-dot" style="background-color: ${color}"></span>
+                            ${robotProfiles[i].id}
+                        </div>
+                        <span class="range-badge" id="badge-${i}">${range}</span>
+                    </div>
+                    <div id="coord-${i}" style="font-weight: bold; margin-top:2px;">${coordText}</div>
+                    <div style="color: #94a3b8;">DISTANCE: ${robot ? robot.totalDistanceMeters.toFixed(1) : 0}m</div>
+                    <div class="battery-container">
+                        <div style="display:flex; justify-content:space-between; font-size:0.65rem; color:var(--text-muted);">
+                            <span>BATT (150Ah)</span> <span id="batt-txt-${i}">${batteryVal.toFixed(1)}%</span>
+                        </div>
+                        <div class="bar-bg"><div class="bar-fill" id="batt-bar-${i}" style="width: ${batteryVal}%;"></div></div>
+                    </div>
+                    <div class="card-status" id="status-${i}" style="color: ${robot ? "var(--green-accent)" : "var(--text-muted)"}; background-color: ${robot ? "rgba(16, 185, 129, 0.08)" : "transparent"}">${statusText}</div>
+                    <div class="card-duration" id="duration-${i}">${durationText}</div>
+                </div>
+            `;
+        }
+    }
+
+    function liveUpdateTelemetryDOM() {
+        for (let i = 0; i < 6; i++) {
+            let robot = activeRobots[i];
+            if (!robot) continue; 
+
+            const coordEl = document.getElementById('coord-' + i);
+            const battTxtEl = document.getElementById('batt-txt-' + i);
+            const battBarEl = document.getElementById('batt-bar-' + i);
+            const statusEl = document.getElementById('status-' + i);
+            const durationEl = document.getElementById('duration-' + i);
+
+            if (coordEl) coordEl.innerText = `COORD: ${Math.round(robot.x * METERS_PER_PIXEL)}m X, ${Math.round(robot.y * METERS_PER_PIXEL)}m Y`;
+            if (battTxtEl) battTxtEl.innerText = `${robot.battery.toFixed(1)}%`;
+            if (battBarEl) {
+                battBarEl.style.width = `${Math.max(0, robot.battery)}%`;
+                if (robot.battery <= 20) {
+                    battBarEl.style.backgroundColor = 'var(--red-accent)';
+                } else if (robot.battery <= 50) {
+                    battBarEl.style.backgroundColor = 'var(--orange-accent)';
+                } else {
+                    battBarEl.style.backgroundColor = 'var(--green-accent)';
+                }
+            }
+            if (durationEl) durationEl.innerText = `EST / DUR: ${formatTime(robot.estimatedDurationSec)} / ${formatTime(robot.durationSeconds)}`;
+            
+            if (statusEl) {
+                statusEl.innerText = getHumanStatus(currentState, robot);
+                if (robot.isLowBatteryRTL) {
+                    statusEl.style.color = 'var(--red-accent)';
+                    statusEl.style.backgroundColor = 'rgba(239, 68, 68, 0.15)';
+                } else if (robot.isWaiting) {
+                    statusEl.style.color = 'var(--red-accent)';
+                    statusEl.style.backgroundColor = 'rgba(239, 68, 68, 0.08)';
+                } else if (robot.isQueuing) {
+                    statusEl.style.color = 'var(--orange-accent)';
+                    statusEl.style.backgroundColor = 'rgba(245, 158, 11, 0.08)';
+                } else {
+                    statusEl.style.color = 'var(--green-accent)';
+                    statusEl.style.backgroundColor = 'rgba(16, 185, 129, 0.08)';
+                }
+            }
+        }
+    }
+
+    function updateControlButtonsUI() {
+        const btnPause = document.getElementById('btnPause');
+        
+        document.getElementById('btnStart').disabled = (currentState === 'RUNNING' || currentState === 'PAUSED' || currentState === 'RTH');
+        btnPause.disabled = (currentState === 'IDLE' || currentState === 'ENDED');
+        document.getElementById('btnRtl').disabled = (currentState !== 'RUNNING');
+        document.getElementById('btnReset').disabled = (currentState === 'IDLE');
+
+        if (currentState === 'PAUSED') {
+            btnPause.textContent = 'RESUME SWARM';
+        } else {
+            btnPause.textContent = 'PAUSE SWARM';
+        }
+    }
+
+    function startSim() {
+        const count = parseInt(robotCountInput.value) || 0;
+        if (currentState === 'IDLE' || currentState === 'ENDED') {
+            currentState = 'RUNNING'; 
+            activeRobots = [];
+            lastTimeStamp = performance.now();
+            
+            for (let i = 0; i < count; i++) {
+                activeRobots.push({
+                    id: robotProfiles[i].id, 
+                    x: 24, y: 45 + (i * 75), 
+                    hx: 24, hy: 45 + (i * 75),
+                    color: robotProfiles[i].color, 
+                    speed: SPEED_MOWING_PX, 
+                    battery: 100.0, 
+                    waypoints: [], 
+                    wpIndex: 0, 
+                    currentAngle: 0,
+                    isWaiting: false, 
+                    isQueuing: false,
+                    isLowBatteryRTL: false,
+                    durationSeconds: 0,
+                    estimatedDurationSec: 0,
+                    totalDistanceMeters: 0
+                });
+            }
+            
+            generateGridPaths();      
+            buildTelemetryCards();    
+            updateControlButtonsUI(); 
+        }
+    }
+
+    function togglePauseSim() {
+        currentState = (currentState === 'RUNNING') ? 'PAUSED' : 'RUNNING';
+        if (currentState === 'RUNNING') {
+            lastTimeStamp = performance.now(); 
+        }
+        updateControlButtonsUI();
+    }
+
+    function rthSim() {
+        if(currentState !== 'RUNNING') return;
+        currentState = 'RTH';
+        activeRobots.forEach(robot => {
+            triggerRobotRTL(robot);
+        });
+        updateControlButtonsUI();
+    }
+
+    function triggerRobotRTL(robot) {
+        if(robot.waypoints.length > 0) {
+            let nearestLaneY = globalLaneYPositions[0];
+            let minD = Math.abs(robot.y - nearestLaneY);
+            globalLaneYPositions.forEach(ly => {
+                if(Math.abs(robot.y - ly) < minD) {
+                    minD = Math.abs(robot.y - ly);
+                    nearestLaneY = ly;
+                }
+            });
+
+            robot.waypoints = [ 
+                {x: robot.x, y: robot.y}, 
+                {x: robot.x, y: nearestLaneY},          
+                {x: M_CORRIDOR_LEFT, y: nearestLaneY},   
+                {x: M_CORRIDOR_LEFT, y: robot.hy},       
+                {x: robot.hx, y: robot.hy} 
+            ];
+            robot.wpIndex = 0;
+            robot.isWaiting = false;
+            robot.isQueuing = false;
+            robot.speed = SPEED_TRANSIT_PX; 
+        }
+    }
+
+    function endSim() {
+        currentState = 'IDLE';
+        activeRobots = []; 
+        
+        updateRobotConfigUI(); 
+        updateControlButtonsUI();
+    }
+
+    function drawPalmTree(x, y, radius) {
+        if (imgLoaded && palmCanvas) {
+            ctx.save();
+            ctx.translate(x, y);
+            const targetSize = radius * 2.8; 
+            ctx.drawImage(palmCanvas, -targetSize / 2, -targetSize / 2, targetSize, targetSize);
+            ctx.restore();
+        } else {
+            ctx.save();
+            ctx.translate(x, y);
+            const fronds = 8; 
+            for (let i = 0; i < fronds; i++) {
+                ctx.rotate((Math.PI * 2) / fronds);
+                ctx.strokeStyle = '#2d6a4f';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath(); ctx.moveTo(0, 0); ctx.quadraticCurveTo(radius*0.5, radius*0.3, radius, 0); ctx.stroke();
+            }
+            ctx.fillStyle = '#1b4332';
+            ctx.beginPath(); ctx.arc(0, 0, 3, 0, Math.PI * 2); ctx.fill();
+            ctx.restore();
+        }
+    }
+
+    function drawGridAndAssets() {
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, gridStartX, canvas.height);
+        
+        for(let i=0; i<6; i++) {
+            let sY = 45 + (i * 75);
+            ctx.fillStyle = '#e0e0e0';
+            ctx.fillRect(5, sY - 22, 48, 44);
+        }
+        
+        ctx.strokeStyle = 'rgba(0, 180, 216, 0.4)';
+        ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(gridStartX, 0); ctx.lineTo(gridStartX, canvas.height); ctx.stroke();
+
+        ctx.strokeStyle = 'rgba(0, 0, 0, 0.15)';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.moveTo(gridStartX + pWidth, 0); ctx.lineTo(gridStartX + pWidth, canvas.height); ctx.stroke();
+
+        for (let i = 1; i < 3; i++) {
+            ctx.beginPath(); ctx.moveTo(gridStartX, i * pHeight); ctx.lineTo(canvas.width, i * pHeight); ctx.stroke();
+        }
+
+        globalTreeYPositions.forEach((finalY, rowIndex) => {
+            let shiftX = (rowIndex % 2 === 1) ? ROW_SHIFT : 0;
+
+            let xLeftStart = gridStartX + 20;
+            let xLeftEnd = Corridor_Center - 20;
+            for (let x = xLeftStart - HORIZONTAL_SPACING; x < xLeftEnd + HORIZONTAL_SPACING; x += HORIZONTAL_SPACING) {
+                let finalX = x + shiftX;
+                if (finalX >= xLeftStart && finalX <= xLeftEnd) drawPalmTree(finalX, finalY, 9);
+            }
+
+            let xRightStart = Corridor_Center + 20;
+            let xRightEnd = canvas.width - 20;
+            for (let x = xRightStart - HORIZONTAL_SPACING; x < xRightEnd + HORIZONTAL_SPACING; x += HORIZONTAL_SPACING) {
+                let finalX = x + shiftX;
+                if (finalX >= xRightStart && finalX <= xRightEnd) drawPalmTree(finalX, finalY, 9);
+            }
+        });
+
+        ctx.fillStyle = '#005f73';
+        ctx.font = 'bold 12px monospace';
+        ctx.textAlign = 'center';
+        for (let p = 1; p <= 6; p++) {
+            let r = plotMapping[p].r; let c = plotMapping[p].c;
+            ctx.fillText(`PETAK 0${p}`, gridStartX + (c * pWidth) + (pWidth / 2), (r * pHeight) + 22);
+        }
+    }
+
+    function drawFarmryRobotIcon(x, y, angle, accentColor) {
+        ctx.save();
+        ctx.translate(x, y); 
+        ctx.rotate(angle); 
+        ctx.scale(0.48, 0.48); 
+        
+        ctx.fillStyle = '#1e222b'; 
+        ctx.fillRect(-18, -18, 36, 36);
+        
+        ctx.strokeStyle = '#6e7a8a'; 
+        ctx.lineWidth = 3;
+        ctx.strokeRect(-18, -18, 36, 36);
+        
+        ctx.fillStyle = '#0f1115';
+        ctx.fillRect(-22, -14, 4, 28);
+        ctx.fillRect(18, -14, 4, 28);
+        
+        ctx.fillStyle = accentColor; 
+        ctx.beginPath(); 
+        ctx.arc(0, -4, 5, 0, Math.PI * 2); 
+        ctx.fill();
+        
+        ctx.fillStyle = accentColor;
+        ctx.globalAlpha = 0.35;
+        ctx.beginPath(); 
+        ctx.arc(0, -4, 9, 0, Math.PI * 2); 
+        ctx.fill();
+        
+        ctx.restore();
+    }
+
+    function updateRobotsPhysics(realDeltaTime) {
+    if (currentState === 'RUNNING' || currentState === 'RTH') {
+        let simDeltaTime = realDeltaTime * TIME_FACTOR; 
+
+        activeRobots.forEach((robot, index) => {
+            robot.isWaiting = false; 
+            robot.isQueuing = false;
+
+            // Kurasan Baterai
+            let currentDrain = (robot.speed === SPEED_MOWING_PX) ? BATT_DRAIN_MOWING : BATT_DRAIN_TRANSIT;
+            if (robot.battery > 0) {
+                robot.battery -= currentDrain * simDeltaTime;
+            }
+
+            // Failsafe Baterai Kritis
+            if (robot.battery <= 20.0 && !robot.isLowBatteryRTL) {
+                robot.isLowBatteryRTL = true;
+                console.warn(`[GCS FAILSAFE] ${robot.id} Baterai Kritis (${robot.battery.toFixed(1)}%). Mematikan pisau & RTL ke Staging!`);
+                triggerRobotRTL(robot);
+            }
+
+            if (robot.wpIndex < robot.waypoints.length) {
+                robot.durationSeconds += simDeltaTime;
+
+                let target = robot.waypoints[robot.wpIndex];
+                let dist = Math.hypot(target.x - robot.x, target.y - robot.y);
+                let currentSpeed = robot.speed * simDeltaTime; 
+
+                // === ZONA DETEKSI DAN YIELDING DINI MODE PENYIANGAN ===
+                const STOP_DISTANCE = 42;   // Jarak fisik aman antarrobot (px)
+                const QUEUE_DISTANCE = 95;  // Ditingkatkan ke 95px agar Yielding terjadi jauh lebih cepat
+
+                for (let j = 0; j < activeRobots.length; j++) {
+                    if (index === j) continue;
+                    let other = activeRobots[j];
+                    
+                    if (other.wpIndex < other.waypoints.length) {
+                        // 1. Jarak Fisik Riil Saat Ini
+                        let distToOther = Math.hypot(other.x - robot.x, other.y - robot.y);
+                        
+                        // 2. Prediksi Posisi Masa Depan (Look-ahead) untuk Mencegah Keterlambatan Respon
+                        let nextRobotX = robot.x + ((target.x - robot.x) / (dist || 1)) * currentSpeed;
+                        let nextRobotY = robot.y + ((target.y - robot.y) / (dist || 1)) * currentSpeed;
+                        
+                        let otherTarget = other.waypoints[other.wpIndex];
+                        let otherDist = Math.hypot(otherTarget.x - other.x, otherTarget.y - other.y) || 1;
+                        let otherSpeed = other.speed * simDeltaTime;
+                        let nextOtherX = other.x + ((otherTarget.x - other.x) / otherDist) * otherSpeed;
+                        let nextOtherY = other.y + ((otherTarget.y - other.y) / otherDist) * otherSpeed;
+
+                        let futureDist = Math.hypot(nextOtherX - nextRobotX, nextOtherY - nextRobotY);
+
+                        // Vektor Arah Pergerakan (Mengecek Apakah Robot Lain Berada di Depan)
+                        let vx = target.x - robot.x;
+                        let vy = target.y - robot.y;
+                        let vox = other.x - robot.x;
+                        let voy = other.y - robot.y;
+                        let dotProduct = (vx * vox + vy * voy); 
+
+                        // Prioritas Berdasarkan Urutan Indeks: Index lebih besar (misal Robot 4) Wajib Mengalah pada Index lebih kecil (Robot 3)
+                        if (index > j && (dotProduct > 0 || futureDist < STOP_DISTANCE)) {
+                            let effectiveDist = Math.min(distToOther, futureDist);
+
+                            if (effectiveDist < QUEUE_DISTANCE) {
+                                robot.isQueuing = true;
+                                
+                                if (effectiveDist <= STOP_DISTANCE) {
+                                    // Berhenti Total Sebelum Terjadi Gesekan
+                                    currentSpeed = 0;
+                                    robot.isWaiting = true;
+                                    break; 
+                                } else {
+                                    // Kurva Pengereman Responsif Dini
+                                    let factor = (effectiveDist - STOP_DISTANCE) / (QUEUE_DISTANCE - STOP_DISTANCE);
+                                    let smoothFactor = Math.pow(factor, 1.5); 
+                                    currentSpeed = Math.min(currentSpeed, (robot.speed * simDeltaTime) * smoothFactor);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Eksekusi Pergerakan Robot
+                if (currentSpeed > 0) {
+                    if (dist <= currentSpeed) { 
+                        robot.x = target.x;
+                        robot.y = target.y;
+                        robot.wpIndex++; 
+                    } else {
+                        robot.x += ((target.x - robot.x) / dist) * currentSpeed;
+                        robot.y += ((target.y - robot.y) / dist) * currentSpeed;
+                        robot.currentAngle = Math.atan2(target.y - robot.y, target.x - robot.x) - Math.PI / 2;
+                    }
+                }
+            }
+        });
+        
+        let allDone = activeRobots.every(r => r.wpIndex >= r.waypoints.length);
+        if (allDone && activeRobots.length > 0 && currentState !== 'IDLE') {
+            currentState = 'ENDED';
+            updateControlButtonsUI();
+        }
+    }
+}
+
+    function drawSimulationEntities() {
+        if (currentState === 'IDLE') {
+            const count = parseInt(robotCountInput.value) || 0;
+            for (let i = 0; i < count; i++) { 
+                drawFarmryRobotIcon(24, 45 + (i * 75), 0, robotProfiles[i].color + "40"); 
+            }
+        } else {
+            activeRobots.forEach(robot => {
+                drawFarmryRobotIcon(robot.x, robot.y, robot.currentAngle, robot.color);
+            });
+        }
+    }
+
+    function mainRenderLoop(now) {
+        if (!lastTimeStamp) lastTimeStamp = now;
+        let realDeltaTime = (now - lastTimeStamp) / 1000; 
+        lastTimeStamp = now;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        drawGridAndAssets();
+        updateRobotsPhysics(realDeltaTime);
+        drawSimulationEntities();
+        
+        if(activeRobots.length > 0) liveUpdateTelemetryDOM();
+        animationId = requestAnimationFrame(mainRenderLoop);
+    }
+
+    updateRobotConfigUI(); 
+    updateControlButtonsUI();
+    requestAnimationFrame(mainRenderLoop);
+</script>
+</body>
+</html>

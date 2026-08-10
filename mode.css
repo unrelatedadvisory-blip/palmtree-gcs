@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+.body{
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-image: url('images/background.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-color: #0f172a;
+    font-family: Inter;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.header{
+    box-sizing: border-box;
+    margin: 0px;
+    margin-top: 65px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 5%;
+}
+
+.header img{
+    width: 65px;
+    height: auto;
+}
+
+.header img:hover{
+    filter: drop-shadow(0 0 5px #5ba19b) drop-shadow(0 0 10px #5ba15b);
+}
+
+.caption h3{
+    color: white;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mode{
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 5%;
+    display: flex;
+    justify-content: space-around;
+    list-style-type: none;
+    align-items: center;
+}
+
+.mode-klik{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    max-width: 244px;
+}
+
+.mode-klik .icon-mode{
+    width: 60px;
+    height: auto;
+    margin-bottom: 12px;
+    transition: filter 0.3s ease;
+}
+
+.mode-klik .teks-mode{
+    color: #ffffff;
+    font-family: Inter, bold;
+    font-weight: 800;
+    letter-spacing: 1px;
+    transition: text-shadow 0.3s ease;
+}
+
+.mode-klik:hover .icon-mode{
+    filter: drop-shadow(0 0 8px #5ba19b) drop-shadow(0 0 15px #5ba19b);
+}
+
+.mode-klik:hover .teks-mode{
+    text-shadow: 0 0 5px #ffffff, 0 0 10px #5ba19b, 0 0 20px #5ba19b;
+}
+
+.mode a{
+    font-family: Inter, bold;
+    text-align: center;
+    font-weight: 750;
+    font-size: 24px;
+    color: white;
+    text-decoration: none;
+}
+
+.mode .icon-mode{
+    height: 244px;
+    width: auto;
+    font-weight: 300;
+    display: flex;
+    flex-direction: column;
+}
+
+.mode-klik .caption-mode{
+    color: #ffffff;
+    font-weight: 300;
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    top: 420px;
+    padding: 244px;
+    text-align: center;
+    width: 244px;
+    pointer-events: none;
+}
+
+.mode-klik:hover .caption-mode{
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+
+

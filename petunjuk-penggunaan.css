@@ -1,0 +1,238 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+::-webkit-scrollbar{
+            width: 7px;
+            height: auto;
+        }
+
+        ::-webkit-scrollbar-track{
+            background: none;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb{
+            background-color: #3f5085;
+            border-radius: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover{
+            background-color: #9cade1;
+        }
+
+.body{
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    gap: 2rem;
+    background-image: url(images/background3.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-color: #0f172a;
+    font-family: Inter;
+    overflow-y: scroll;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.header{
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-sizing: border-box;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 5%;
+}
+
+.back img{
+    max-width: 100%;
+    width: 65px;
+    height: auto;
+    margin-top: 65%;
+}
+
+.back img:hover{
+    filter: drop-shadow(0 0 5px #5ba19b) drop-shadow(0 0 10px #5ba15b);
+}
+
+.logo img{
+    cursor:default;
+    max-width: 100%;
+    width: 65px;
+    height: auto;
+    margin-top: 50%;
+}
+
+.logo img:hover{
+    filter: none;
+}
+
+.caption{
+    color: #ffffff;
+    font-style: italic;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+}
+
+.caption h1{
+    text-align: center;
+    font-size: 2.19rem;
+    font-weight: 700;
+    margin-top: -4%;
+}
+
+.caption h4{
+    font-size: 1rem;
+    visibility: hidden;
+}
+
+.caption h2{
+    font-size: 1.25rem;
+    font-weight: 300;
+    margin-left: 28%;
+}
+
+.caption h3{
+    font-size: 1.25rem;
+    font-weight: 300;
+    margin-left: 29%;
+    margin-right: 27%;
+}
+
+.caption h5{
+    text-align: center;
+    font-size: 2.19rem;
+    font-weight: 700;
+}
+
+.caption h6{
+    text-align: justify;
+    font-size: 1.25rem;
+    font-weight: 300;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+.petunjuk1 img{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    max-width: 100%;
+    width: 145px;
+    height: auto;
+    margin-left: 45%;
+    margin-bottom: 1.7rem;
+    margin-top: 1rem;
+    filter: drop-shadow(0 0 5px #000000) drop-shadow(0 0 12px #000000);
+}
+
+.petunjuk2 img{
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 100%;
+    width: 860px;
+    height: auto;
+    margin-left: 28%;
+    margin-bottom: 1.7rem;
+    filter: drop-shadow(0 0 5px #000000) drop-shadow(0 0 12px #000000);
+    border-radius: 12px;
+}
+
+.pembatas{
+    padding-bottom: 2.5rem;
+    margin-bottom: 2.5rem;
+    border-bottom: 0.06rem solid rgba(255, 255, 255, 1);
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+.simulasi1 img{
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 100%;
+    width: 860px;
+    height: auto;
+    margin-left: 28%;
+    margin-bottom: 1.7rem;
+    filter: drop-shadow(0 0 5px #000000) drop-shadow(0 0 12px #000000);
+    border-radius: 12px;
+}
+
+.sidebar img{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 100%;
+    width: auto;
+    height: 450px;
+    border-radius: 10px;
+    margin-left: 43%;
+    margin-bottom: 1.7rem;
+    filter: drop-shadow(0 0 5px #000000) drop-shadow(0 0 12px #000000);
+    border-radius: 12px;
+}
+
+.mission-control{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: space-between;
+    padding: 1.875rem;
+}
+
+.blok-gambar{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    margin: 1.56rem;
+    max-width: 250px;
+}
+
+.gambar-simulator{
+    flex-wrap: wrap;
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    filter: drop-shadow(0 0 5px #000000);
+}
+
+.caption-mission-control{
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 0.75rem;
+    color: cornflowerblue;
+    text-align: center;
+    margin-top: 0.625rem;
+    line-height: 1.4;
+}
+
+.monitoring-panel img{
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 100%;
+    width: 820px;
+    height: auto;
+    border-radius: 10px;
+    margin-left: 28%;
+    margin-bottom: 1.56rem;
+    filter: drop-shadow(0 0 5px #000000) drop-shadow(0 0 12px #000000);
+    border-radius: 12px;
+}
+
+

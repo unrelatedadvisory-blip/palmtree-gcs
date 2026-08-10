@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="petunjuk-penggunaan.css" />
+    <head>
+        <title>GCS SWARM ROBOTICS SIMULATOR</title>
+    </head>
+
+    <body>
+        <div class="body">
+            <div class="header">
+                <div class="back">
+                    <a href="index.html">
+                        <img src="images/back.png" alt="BACK" class="back-icon" />
+                    </a>
+                </div>
+                <div class="logo">
+                    <img src="images/logo-w-text2.png"/>
+                </div>
+            </div>
+            <div class="caption">
+                <h1>PETUNJUK PENGGUNAAN</h1>
+                <h4>NO-TEXT</h4>
+                <h2>1. Klik tombol Pilih Mode pada landing page</h2>
+                <h3>Dengan mengklik tombol Pilih Mode akan menuju ke halaman pilihan mode yang berisi 3 mode: Mode Pemupukan, Mode Penyiangan, Mode Rute Kustom.</h3>
+                <div class="petunjuk1">
+                    <img src="images/pilih-mode.png"/>
+                </div>
+                <h2>2. Pilih mode yang ingin disimulasikan</h2>
+                <h3>Setelah mengklik tombol Pilih Mode akan ditampilkan 3 pilihan mode seperti gambar di bawah ini.</h3>
+                <div class="petunjuk2">
+                    <img src="images/pilihan-mode.png"/>
+                </div>
+                <h2>3. Simulasi siap digunakan</h2>
+                <h3>Seperti inilah tampilan dari salah satu simulator website ini.</h3>
+                <div class="petunjuk2">
+                    <img src="images/tampilan-simulator.png"/>
+                </div>
+                <div class="pembatas"></div>
+                <h5>MODE PEMUPUKAN & MODE PENYIANGAN</h5>
+                <h6>Bagian pertama, simulator ini menggunakan canvas seperti berikut.</h6>
+                <div class="petunjuk2">
+                    <img src="images/canvas.png"/>
+                </div>
+                <h6>Seperti yang ditunjukkan pada gambar, canvas ini berisikan tempat robot diluncurkan yang berjumlah 6 kotak sesuai dengan kapasitas maksimal dari simulator. Canvas ini menggambarkan lahan perkebunan kelapa sawit seluas 2 hektar dengan skala 1 meter : 0.3652 pixel. Jika digambarkan berbentuk persegi panjang, maka lahan ini dapat memuat 392 pohon kelapa sawit yang tersusun secara zig-zag dengan jarak 9 meter masing-masing pohon. Susunan pohon terdiri dari 70 pohon di petak 1 sampai 4, 56 pohon di petak 5 dan 6. Tata letak pada canvas ini berlaku pada semua mode.</h6>
+                <h6>Pada Mode Pemupukan dan Mode Penyiangan ini memiliki sistem control simulator yang sama. Berikut ini adalah tampilan dari kedua mode simulasi tersebut.</h6>
+                <div class="simulasi1">
+                    <li>
+                        <img src="images/pemupukan.png"/>
+                    </li>
+                    <li>
+                        <img src="images/penyiangan.png"/>
+                    </li>
+                </div>
+                <h6>Dari simulasi ini ada beberapa section yang perlu diperhatikan. Section tersebut yaitu canvas sebagai area perkebunan kelapa sawit dimana robot lawn mower disimulasikan, sidebar tempat pengaturan jumlah robot beserta lokasi kerja dan pengaturan kecepatan simulasi, mission control untuk mengendalikan jalannya simulasi, serta panel monitoring kinerja robot lawn mower.</h6>
+                <h6>Berikut adalah tampilan dari sidebar.</h6>
+                <div class="sidebar">
+                    <img src="images/sidebar-pemupukan-penyiangan.png"/>
+                </div>
+                <h6>Dalam sidebar tersebut terdiri dari pengaturan kecepatan simulasi, pengaturan jumlah robot, dan pengalokasian misi robot. Kecepatan simulasi tersedia dari real time, 10x, 30x, 60x, dan 120x. Jumlah robot yang disimulasikan terbatas maksimal 6 robot. Di bagian bawah terdapat section pengalokasian misi masing-masing robot yang disimulasikan.</h6>
+                <h6>Selanjutnya section Mission Control.</h6>
+                <div class="mission-control">
+                    <figure class="blok-gambar">
+                        <img src="images/mission-kontrol.png" class="gambar-simulator"/>
+                        <figcaption class="caption-mission-control">
+                            Sebelum simulasi dijalankan
+                        </figcaption>                        
+                    </figure>
+                    <figure class="blok-gambar">                        
+                        <img src="images/mission-kontrol2.png" class="gambar-simulator"/>
+                        <figcaption class="caption-mission-control">
+                            Saat simulasi dijalankan
+                        </figcaption>
+                    </figure>
+                </div>
+                <h6>Pada section Mission Control, terdapat 5 tombol untuk mengendalikan jalannya simulasi. Ketika simulasi belum dijalankan, maka tombol Start Mission untuk memulai simulasi dan tombol Kembali untuk menuju halaman pilihan mode yang akan menyala pertanda dapat berfungsi. Sedangkan pada saat simulasi sudah dijalankan, tombol Start Mission akan meredup. Tombol yang dapat difungsikan ada 4 yakni tombol Pause Swarm untuk menjeda simulasi robot, tombol Force RTL untuk memerintahkan robot kembali ke lokasi peluncuran robot, tombol Reset Simulator untuk mengatur ulang simulasi, dan tombol Kembali untuk menuju halaman pilihan mode. Tombol Kembali dapat difungsikan ketika simulasi sudah selesai atau sudah dilakukan Reset Simulator.</h6>
+                <h6>Kemudian real-time monitoring panel.</h6>
+                <div class="monitoring-panel">
+                    <img src="images/real-time-monitoring.png"/>
+                </div>
+                <h6>Real-time monitoring panel menyajikan robot yang menyala menjalankan misi. Dari masing-masing robot yang menjalankan misi akan menunjukkan keterangan area misi (P:1-1), lokasi koordinat robot terkini, jarak yang sudah ditempuh robot dalam menjalankan misi, persentase baterai, status ketersediaan robot, serta estimasi dan durasi robot dalam menjalankan misi.</h6>
+                <div class="pembatas"></div>
+                <h5>MODE RUTE KUSTOM</h5>
+                <h6>Seperti namanya, mode ini menyediakan kebebasan pengguna untuk memilih sendiri rute yang akan dijalankan oleh robot. Cara pemilihan rute adalah dengan mengklik pada area canvas seperti gambar berikut.</h6>
+                <div class="petunjuk2">
+                    <img src="images/canvas-rute-kustom.png"/>
+                </div>
+                <h6>Pemilihan rute dilakukan pada masing-masing robot yang ditugaskan misi. Keterangan robot yang sedang dibuatkan rute berada pada sidebar simulator.</h6>
+                <div class="sidebar">
+                    <img src="images/sidebar-rute-kustom.png"/>
+                </div>
+                <h6>Selain terdapat pemilihan robot yang sedang dibuatkan rute, sidebar ini juga menampilkan pilihan jumlah robot yang akan disimulasikan dan kecepatan simulasi. Untuk mendukung fleksibilitas pengguna, pemilihan rute dapat di undo dan redo sehingga tidak harus mengulang dari awal jika ada kesalahan.</h6>
+                <h6>Pada Mission Control sama dengan mode lainnya. Seperti berikut.</h6>
+                <div class="mission-control">
+                    <figure class="blok-gambar">
+                        <img src="images/mission-kontrol.png" class="gambar-simulator"/>
+                        <figcaption class="caption-mission-control">
+                            Sebelum simulasi dijalankan
+                        </figcaption>                        
+                    </figure>
+                    <figure class="blok-gambar">                        
+                        <img src="images/mission-kontrol2.png" class="gambar-simulator"/>
+                        <figcaption class="caption-mission-control">
+                            Saat simulasi dijalankan
+                        </figcaption>
+                    </figure>
+                </div>
+                <h6>Selanjutnya adalah real-time monitoring panel.</h6>
+                <div class="monitoring-panel">
+                    <img src="images/real-time-monitoring-rute-kustom.png"/>
+                </div>
+                <h6>Real-time monitoring panel ini juga menampilkan nama robot, area pengerjaan robot (Custom: 5pts, jumlah tergantung titik yang dibuat), titik koordinat, jarak tempuh robot, persentase baterai robot, status ketersediaan robot, serta estimasi dan durasi pengerjaan misi oleh robot.</h6>
+            </div>
+        </div>
+    </body>
+</html>
