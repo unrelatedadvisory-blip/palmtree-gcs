@@ -29,7 +29,7 @@
     flex-direction: column;
     align-content: center;
     gap: 2rem;
-    background-image: url(images/background3.png);
+    background-image: url('images/background3_v3.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
