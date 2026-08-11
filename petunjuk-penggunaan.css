@@ -161,20 +161,20 @@
     margin-right: 25%;
 }
 
-.simulasi1 img{
-    display: flex;
-    flex-wrap: wrap;
-    max-width: 100%;
-    width: 860px;
-    height: auto;
-    margin-left: 28%;
-    margin-bottom: 1.7rem;
-    filter: drop-shadow(0 0 5px #000000) drop-shadow(0 0 12px #000000);
-    border-radius: 12px;
-}
-
 .simulasi1 li{
-    list-style: none;        
+    list-style: none;
+                img{
+                display: flex;
+                flex-wrap: wrap;
+                max-width: 100%;
+                width: 860px;
+                height: auto;
+                margin-left: 28%;
+                margin-bottom: 1.7rem;
+                filter: drop-shadow(0 0 5px #000000) drop-shadow(0 0 12px #000000);
+                border-radius: 12px;
+                }
+}
 
 .sidebar img{
     display: flex;
@@ -195,8 +195,7 @@
     flex-wrap: wrap;
     justify-content: center;
     align-content: space-between;
-    padding: 1.875rem;
-    margin-left: 45%;       
+    padding: 1.875rem;       
 }
 
 .blok-gambar{
