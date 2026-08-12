@@ -63,14 +63,14 @@ body {
 
 .caption {
     text-align: center;
-    margin: 60px auto 0 auto;
+    margin: 240px auto 0 auto;
     padding: 0 20px;
     max-width: 800px;
 }
 
 .caption h3, .caption p {
     font-size: 1.15rem;
-    font-weight: 300;
+    font-weight: 400;
     font-style: italic;
     line-height: 1.6;
 }
@@ -109,4 +109,11 @@ body {
     .caption h3, .caption p {
         font-size: 0.95rem;
     }
+
+    .button img {
+    max-width: 100%;
+    width: 80px;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.3s ease, filter 0.3s ease;
 }
