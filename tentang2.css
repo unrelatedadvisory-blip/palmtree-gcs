@@ -17,6 +17,7 @@ body {
     background-attachment: fixed;
     background-color: #0f172a;
     font-family: 'Inter', sans-serif;
+    font-style: italic;
     color: #ffffff;
 }
 
@@ -146,6 +147,7 @@ body {
     font-size: 0.85rem;
     color: rgba(255, 255, 255, 0.5);
     font-weight: 500;
+    visibility: hidden;
     letter-spacing: 1px;
     margin: 0;
 }
