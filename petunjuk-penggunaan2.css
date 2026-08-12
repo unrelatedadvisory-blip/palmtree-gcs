@@ -39,6 +39,8 @@
     background-size: cover;
     background-attachment: fixed;
     background-color: #0f172a;
+    overflow-y: scroll;
+    position: fixed;
     font-family: 'Inter', sans-serif;
     padding-bottom: 4rem;
 }
@@ -46,6 +48,7 @@
 .header {
     position: sticky;
     top: 30px;
+    z-index: 100;
     box-sizing: border-box;
     margin: 0;
     display: flex;
