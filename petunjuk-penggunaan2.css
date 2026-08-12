@@ -40,7 +40,6 @@
     background-attachment: fixed;
     background-color: #0f172a;
     overflow-y: scroll;
-    position: fixed;
     font-family: 'Inter', sans-serif;
     padding-bottom: 4rem;
 }
