@@ -12,7 +12,7 @@
 }
 
 ::-webkit-scrollbar-track {
-    background: none;
+    background: transparent;
     border-radius: 10px;
 }
 
@@ -40,7 +40,6 @@
     background-attachment: fixed;
     background-color: #0f172a;
     font-family: 'Inter', sans-serif;
-    overflow-y: auto;
     padding-bottom: 4rem;
 }
 
@@ -54,8 +53,6 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px 5%;
-    background: rgba(15, 23, 42, 0.85);
-    backdrop-filter: blur(8px);
 }
 
 .back img {
