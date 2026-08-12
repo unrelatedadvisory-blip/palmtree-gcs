@@ -101,10 +101,26 @@ body {
         padding: 15px 5%;
     }
 
-    .navigation {
-        padding: 0;
-        gap: 15px;
+    .logo {
+    cursor: pointer;
+    width: 150px;
+    max-width: 100%;
+    height: auto;
+    display: block;
     }
+
+    .navigation {
+    padding: 0;
+    gap: 15px;
+    }
+
+    .navigation li a {
+    font-weight: 700;
+    font-size: 0.5rem;
+    color: white;
+    text-decoration: none;
+    transition: text-shadow 0.3s ease, color 0.3s ease;
+}
 
     .caption h3, .caption p {
         font-size: 0.95rem;
