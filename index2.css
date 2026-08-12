@@ -52,7 +52,6 @@ body {
     font-weight: 700;
     font-size: 1rem;
     color: white;
-    margin: 0 15%;
     text-decoration: none;
     transition: text-shadow 0.3s ease, color 0.3s ease;
 }
