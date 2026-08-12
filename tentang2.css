@@ -89,14 +89,14 @@ body {
 .wadah-tabel-responsif2 {
     width: 100%;
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     margin-bottom: 1.5rem;
-    display: flex;
-    justify-content: center;
 }
 
 .tabel-simulator {
     width: 100%;
     max-width: 850px;
+    margin: 0 auto;
     border-collapse: collapse;
     font-size: 14px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
@@ -160,6 +160,7 @@ body {
 
     .tabel-simulator {
         min-width: 550px;
+        margin: 0;
     }
 
     .pembatas {
