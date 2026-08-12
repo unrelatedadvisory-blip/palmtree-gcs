@@ -1,213 +1,280 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
-*, *::before, *::after {
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-body {
-    min-height: 100vh;
-    width: 100%;
-    background-color: #0f172a;
-    background-image: url('images/background3_v3.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    background-attachment: fixed;
-    font-family: 'Inter', sans-serif;
-    color: #ffffff;
-    line-height: 1.6;
-    overflow-x: hidden;
-}
-
-/* Custom Scrollbar */
 ::-webkit-scrollbar {
-    width: 8px;
+    width: 7px;
+    height: auto;
 }
 
 ::-webkit-scrollbar-track {
-    background: #0f172a;
+    background: none;
+    border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
     background-color: #3f5085;
     border-radius: 10px;
+    transition: background-color 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
     background-color: #9cade1;
 }
 
-.site-wrapper {
+.body {
+    min-height: 100vh;
     width: 100%;
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 1.5rem 4rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    gap: 2rem;
+    background-image: url('images/background3_v3.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-color: #0f172a;
+    font-family: 'Inter', sans-serif;
+    overflow-y: auto;
+    padding-bottom: 4rem;
 }
 
 .header {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(15, 23, 42, 0.85);
-    backdrop-filter: blur(8px);
+    box-sizing: border-box;
+    margin: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 0;
-    margin-bottom: 2rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 10px 5%;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(8px);
 }
 
-.back-link img,
-.logo img {
+.back img {
+    max-width: 100%;
     width: 50px;
     height: auto;
     display: block;
     transition: transform 0.2s ease, filter 0.3s ease;
 }
 
-.back-link:hover img {
-    filter: drop-shadow(0 0 8px #5ba19b);
+.back img:hover {
+    filter: drop-shadow(0 0 5px #5ba19b) drop-shadow(0 0 10px #5ba15b);
+    transform: translateX(-3px);
 }
 
-.page-title {
-    text-align: center;
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
-    font-weight: 800;
-    margin-bottom: 3rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    background: linear-gradient(135deg, #ffffff 0%, #9cade1 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+.logo img {
+    cursor: default;
+    max-width: 100%;
+    width: 50px;
+    height: auto;
+    display: block;
 }
 
-.section-title {
-    font-size: clamp(1.3rem, 3vw, 1.8rem);
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    color: #6495ed;
-    border-left: 4px solid #6495ed;
-    padding-left: 0.75rem;
+.logo img:hover {
+    filter: none;
 }
 
-.guide-section {
-    margin-bottom: 3rem;
-}
-
-.guide-block {
-    margin-bottom: 2.5rem;
-}
-
-.guide-block h3 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 0.75rem;
-    color: #e2e8f0;
-}
-
-p {
-    font-size: 1rem;
-    color: #cbd5e1;
-    margin-bottom: 1rem;
-    text-align: justify;
-}
-
-code {
-    background: rgba(100, 149, 237, 0.15);
-    color: #9cade1;
-    padding: 0.2rem 0.4rem;
-    border-radius: 4px;
-    font-family: monospace;
-}
-
-.divider {
-    border: none;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    margin: 3rem 0;
-}
-
-.steps-list {
-    list-style: none;
-    counter-reset: step-counter;
-}
-
-.step-item {
-    position: relative;
-    margin-bottom: 2.5rem;
-}
-
-.step-item h2 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 0.75rem;
+.caption {
     color: #ffffff;
+    font-style: italic;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 0 1.5rem;
 }
 
-.img-wrapper {
+.caption h1 {
+    text-align: center;
+    font-size: clamp(1.8rem, 4vw, 2.19rem);
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.caption h4 {
+    display: none;
+}
+
+.caption h2 {
+    font-size: clamp(1.1rem, 2.5vw, 1.25rem);
+    font-weight: 300;
+    width: 100%;
+    max-width: 860px;
+    text-align: left;
+    margin: 1rem 0 0.5rem 0;
+}
+
+.caption h3 {
+    font-size: clamp(1.1rem, 2.5vw, 1.25rem);
+    font-weight: 300;
+    width: 100%;
+    max-width: 860px;
+    text-align: left;
+    margin: 1rem 0 0.5rem 0;
+}
+
+.caption h5 {
+    text-align: center;
+    font-size: clamp(1.8rem, 4vw, 2.19rem);
+    font-weight: 700;
+    margin: 2rem 0 1rem 0;
+}
+
+.caption h6 {
+    text-align: justify;
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    font-weight: 300;
+    width: 100%;
+    max-width: 860px;
+    margin: 0.5rem auto 1.5rem auto;
+    line-height: 1.6;
+}
+
+.petunjuk1 img {
+    display: block;
+    max-width: 100%;
+    width: 145px;
+    height: auto;
+    margin: 1rem auto 1.7rem auto;
+    filter: drop-shadow(0 0 5px #000000) drop-shadow(0 0 12px #000000);
+}
+
+.petunjuk2 img {
+    display: block;
+    max-width: 100%;
+    width: 860px;
+    height: auto;
+    margin: 0 auto 1.7rem auto;
+    filter: drop-shadow(0 0 5px #000000) drop-shadow(0 0 12px #000000);
+    border-radius: 12px;
+}
+
+.pembatas {
+    padding-bottom: 2.5rem;
+    margin-bottom: 2.5rem;
+    border-bottom: 0.06rem solid rgba(255, 255, 255, 1);
+    width: 100%;
+    max-width: 860px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.simulasi1 li {
+    list-style: none;
     width: 100%;
     display: flex;
     justify-content: center;
-    margin: 1.25rem 0;
 }
 
-.img-wrapper img {
+.simulasi1 li img {
+    display: block;
     max-width: 100%;
+    width: 860px;
     height: auto;
+    margin: 0 auto 1.7rem auto;
+    filter: drop-shadow(0 0 5px #000000) drop-shadow(0 0 12px #000000);
     border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.image-grid {
-    display: grid;
-    grid-template-columns: 1fr;
+.sidebar img {
+    display: block;
+    max-width: 100%;
+    width: auto;
+    max-height: 450px;
+    margin: 0 auto 1.7rem auto;
+    filter: drop-shadow(0 0 5px #000000) drop-shadow(0 0 12px #000000);
+    border-radius: 12px;
+}
+
+.mission-control {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
     gap: 1.5rem;
-    margin: 1.5rem 0;
+    padding: 1rem 5%;
+    width: 100%;
 }
 
-@media (min-width: 640px) {
-    .image-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-.image-grid figure {
+.blok-gambar {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 0.5rem;
+    width: 100%;
+    max-width: 280px;
 }
 
-.image-grid img {
+.gambar-simulator {
     width: 100%;
     height: auto;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    filter: drop-shadow(0 0 5px #000000);
 }
 
-.image-grid figcaption {
+.caption-mission-control {
+    display: block;
     font-size: 0.85rem;
-    color: #94a3b8;
-    margin-top: 0.5rem;
+    color: #6495ed;
     text-align: center;
-    font-style: italic;
+    margin-top: 0.625rem;
+    line-height: 1.4;
 }
 
-@media (min-width: 768px) {
+.monitoring-panel img {
+    display: block;
+    max-width: 100%;
+    width: 820px;
+    height: auto;
+    margin: 0 auto 1.56rem auto;
+    filter: drop-shadow(0 0 5px #000000) drop-shadow(0 0 12px #000000);
+    border-radius: 12px;
+}
+
+@media screen and (max-width: 600px) {
     .header {
-        padding: 1.25rem 0;
+        padding: 8px 4%;
     }
 
-    .back-link img,
+    .back img, 
     .logo img {
-        width: 60px;
+        width: 40px;
     }
 
-    p {
-        font-size: 1.05rem;
+    .caption {
+        padding: 0 1rem;
+    }
+
+    .caption h1, 
+    .caption h5 {
+        font-size: 1.5rem;
+    }
+
+    .caption h6 {
+        text-align: left;
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    .petunjuk1 img {
+        width: 100px;
+    }
+
+    .sidebar img {
+        max-height: 320px;
+    }
+
+    .blok-gambar {
+        max-width: 100%;
     }
 }
