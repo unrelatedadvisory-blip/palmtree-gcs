@@ -1,0 +1,365 @@
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+    
+    ::-webkit-scrollbar{
+        width: 5px;
+        height: auto;
+    }
+
+    ::-webkit-scrollbar-track{
+        background: none;
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb{
+        background-color: #222838;
+        border-radius: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+    ::-webkit-scrollbar-thumb:hover{
+        background-color: #3F475E;
+    }
+
+    :root {
+        --bg-main: #070a13;
+        --bg-sidebar: #0f172a;
+        --bg-card: #0f172a;
+        --bg-input: #070a13;
+        --border-color: #1e2638;
+        --text-primary: #ffffff;
+        --text-muted: #64748b;
+        --cyan-accent: #00b4d8;
+        --green-accent: #10b981;
+        --orange-accent: #f59e0b;
+        --red-accent: #ef4444;
+    }
+
+    body {
+        font-family: Inter, sans-serif;
+        background-color: var(--bg-main);
+        color: var(--text-primary);
+        margin: 0;
+        padding: 0;
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+        box-sizing: border-box;
+    }
+
+    .sidebar {
+        width: 320px;
+        background-color: var(--bg-sidebar);
+        border-right: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        gap: 16px;
+        box-sizing: border-box;
+        overflow-y: auto;
+        flex-shrink: 0;
+    }
+
+    .sidebar img {
+        margin: 0;
+        width: 190px;
+        height: auto;
+    }
+
+    .system-mode-tag {
+        font-size: 18px;
+        font-weight: 600;
+        color: #ffffff;
+        margin-top: 10px;
+        margin-bottom: 2px;
+    }
+
+    .section-label {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 6px;
+    }
+
+    .input-box, select.input-box {
+        background-color: var(--bg-input);
+        border: 1px solid var(--border-color);
+        color: #fff;
+        padding: 10px 12px;
+        border-radius: 6px;
+        width: 100%;
+        box-sizing: border-box;
+        font-weight: bold;
+    }
+
+    .time-factor-box {
+        background: rgba(0, 180, 216, 0.08);
+        border: 1px solid rgba(0, 180, 216, 0.3);
+        border-radius: 6px;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .history-control-container {
+        display: flex;
+        gap: 8px;
+        margin-top: 10px;
+    }
+
+    .btn-history {
+        flex: 1;
+        background-color: #242f47;
+        border: 1px solid var(--border-color);
+        color: #fff;
+        padding: 6px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .btn-history:hover:not(:disabled) {
+        background-color: #314061;
+    }
+
+    .btn-history:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+    }
+
+    .control-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: auto;
+        padding-top: 10px;
+    }
+
+    .btn-ctrl {
+        border: none;
+        padding: 12px;
+        border-radius: 6px;
+        color: #fff;
+        font-weight: bold;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: background-color 0.2s, opacity 0.2s;
+        text-align: center;
+    }
+    
+    .btn-ctrl:disabled {
+        background-color: #1e2638 !important;
+        color: #475569;
+        cursor: not-allowed;
+        opacity: 0.4;
+    }
+
+    .btn-ctrl a {
+        color: #ffffff;
+        text-decoration: none;
+        display: block;
+    }
+    
+    #btnStart { background-color: var(--green-accent); }
+    #btnPause { background-color: var(--orange-accent); }
+    #btnRtl { background-color: var(--red-accent); }
+    #btnReset { background-color: #475569; }
+    #btnBack { background-color: #808080;}
+
+    .workspace {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background-color: var(--bg-main);
+        box-sizing: border-box;
+        min-width: 0;
+        overflow-y: auto;
+    }
+
+    .map-area {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        box-sizing: border-box;
+        min-height: 300px;
+    }
+
+    /* Modifikasi CSS Canvas agar Responsif */
+    canvas {
+        background-color: #D6D8CD;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        box-shadow: 0 4px 25px rgba(0,0,0,0.7);
+        cursor: crosshair;
+        max-width: 100%;
+        height: auto;
+        aspect-ratio: 1560 / 680;
+        touch-action: manipulation;
+    }
+
+    .matrix-panel {
+        height: auto;
+        min-height: 230px;
+        border-top: 1px solid var(--border-color);
+        background-color: var(--bg-sidebar);
+        padding: 15px 20px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .matrix-header {
+        font-size: 0.72rem;
+        color: var(--cyan-accent);
+        font-weight: bold;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        letter-spacing: 0.5px;
+    }
+
+    /* Modifikasi Grid Kartu Telemetri agar Scroll Smooth di Smartphone */
+    .matrix-grid {
+        display: flex;
+        gap: 12px;
+        width: 100%;
+        box-sizing: border-box;
+        overflow-x: auto;
+        padding-bottom: 8px;
+    }
+
+    .agent-card {
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        width: 220px; 
+        flex-shrink: 0; 
+        padding: 12px;
+        box-sizing: border-box;
+        font-size: 0.75rem;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .card-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        padding-bottom: 6px;
+    }
+
+    .agent-name {
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .agent-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+    }
+
+    .range-badge {
+        background-color: #005f73;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.65rem;
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
+    .battery-container {
+        margin-top: 2px;
+    }
+
+    .bar-bg {
+        background-color: var(--bg-input);
+        height: 6px;
+        border-radius: 3px;
+        overflow: hidden;
+        margin-top: 4px;
+    }
+
+    .bar-fill {
+        height: 100%;
+        background-color: var(--green-accent);
+        width: 100%;
+        transition: width 0.3s;
+    }
+
+    .card-status {
+        background-color: rgba(16, 185, 129, 0.08);
+        color: var(--green-accent);
+        text-align: center;
+        padding: 4px;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 0.68rem;
+        margin-top: 2px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .card-duration {
+        font-size: 0.68rem;
+        color: var(--cyan-accent);
+        text-align: center;
+        font-weight: bold;
+        background: rgba(0, 180, 216, 0.08);
+        padding: 3px;
+        border-radius: 4px;
+        letter-spacing: 0.5px;
+    }
+
+    .error-banner {
+        color: var(--red-accent);
+        font-size: 0.75rem;
+        font-weight: bold;
+        background: rgba(239, 68, 68, 0.1);
+        padding: 8px;
+        border-radius: 4px;
+        display: none;
+        border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    /* RESPONSIVE LAYOUT UNTUK SMARTPHONE & TABLET */
+    @media (max-width: 868px) {
+        body {
+            flex-direction: column;
+            height: auto;
+            min-height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar {
+            width: 100%;
+            border-right: none;
+            border-bottom: 1px solid var(--border-color);
+            overflow-y: visible;
+        }
+
+        .workspace {
+            overflow-y: visible;
+        }
+
+        .map-area {
+            padding: 5px;
+        }
+    }
+</style>
