@@ -45,8 +45,7 @@
 
 .header {
     position: sticky;
-    top: 0;
-    z-index: 100;
+    top: 30px;
     box-sizing: border-box;
     margin: 0;
     display: flex;
@@ -65,7 +64,6 @@
 
 .back img:hover {
     filter: drop-shadow(0 0 5px #5ba19b) drop-shadow(0 0 10px #5ba15b);
-    transform: translateX(-3px);
 }
 
 .logo img {
