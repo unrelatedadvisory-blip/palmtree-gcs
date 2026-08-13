@@ -145,6 +145,10 @@ body {
     .back-icon {
         width: 40px;
     }
+    
+    .caption {
+        margin-top: 10px;
+    }
 
     .caption h2, .caption h3 {
         font-size: 1.2rem;
