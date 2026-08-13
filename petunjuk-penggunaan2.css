@@ -276,4 +276,7 @@ html {
     .blok-gambar {
         max-width: 100%;
     }
+
+    .gambar-simulator {
+        width: 50%;
 }
