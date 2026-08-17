@@ -65,7 +65,6 @@
             gap: 16px;
             box-sizing: border-box;
             overflow-y: auto;
-            flex-shrink: 0;
         }
 
         .sidebar img {
@@ -170,7 +169,6 @@
         .btn-ctrl a {
             color: #ffffff;
             text-decoration: none;
-            display: block;
         }
         
         #btnStart { background-color: var(--green-accent); }
@@ -186,7 +184,6 @@
             background-color: var(--bg-main);
             box-sizing: border-box;
             min-width: 0;
-            overflow-y: auto;
         }
 
         .map-area {
@@ -196,25 +193,18 @@
             align-items: center;
             padding: 10px;
             box-sizing: border-box;
-            min-height: 300px;
         }
 
-        /* Penyesuaian Canvas Responsif */
         canvas {
             background-color: #D6D8CD;
             border: 1px solid var(--border-color);
             border-radius: 6px;
             box-shadow: 0 4px 25px rgba(0,0,0,0.7);
             cursor: crosshair;
-            max-width: 100%;
-            height: auto;
-            aspect-ratio: 1560 / 680;
-            touch-action: manipulation;
         }
 
         .matrix-panel {
-            height: auto;
-            min-height: 230px;
+            height: 230px;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-sidebar);
             padding: 15px 20px;
@@ -235,14 +225,11 @@
             letter-spacing: 0.5px;
         }
 
-        /* Penyesuaian Grid Telemetri agar mendukung Horizontal Scroll pada layar kecil */
         .matrix-grid {
             display: flex;
             gap: 12px;
             width: 100%;
             box-sizing: border-box;
-            overflow-x: auto;
-            padding-bottom: 8px;
         }
 
         .agent-card {
@@ -344,31 +331,6 @@
             border-radius: 4px;
             display: none;
             border: 1px solid rgba(239, 68, 68, 0.2);
-        }
-
-        /* CSS Media Query Tambahan untuk Mengubah Layout saat diakses Smartphone */
-        @media (max-width: 868px) {
-            body {
-                flex-direction: column;
-                height: auto;
-                min-height: 100vh;
-                overflow-y: auto;
-            }
-
-            .sidebar {
-                width: 100%;
-                border-right: none;
-                border-bottom: 1px solid var(--border-color);
-                overflow-y: visible;
-            }
-
-            .workspace {
-                overflow-y: visible;
-            }
-
-            .map-area {
-                padding: 5px;
-            }
         }
     </style>
 </head>
@@ -600,18 +562,12 @@
         document.getElementById('btnRedo').disabled = (redoStack.length === 0);
     }
 
-    // Penyesuaian Listener Klik Canvas Presisi untuk Smartphone
     canvas.addEventListener('click', function(event) {
         if (currentState !== 'IDLE') return;
 
         const rect = canvas.getBoundingClientRect();
-        
-        // Menghitung rasio skala resolusi internal canvas terhadap ukuran elemen di layar HP
-        const scaleX = canvas.width / rect.width;
-        const scaleY = canvas.height / rect.height;
-
-        const clickX = (event.clientX - rect.left) * scaleX;
-        const clickY = (event.clientY - rect.top) * scaleY;
+        const clickX = event.clientX - rect.left;
+        const clickY = event.clientY - rect.top;
 
         if (clickX < gridStartX) return;
 
@@ -1026,22 +982,22 @@
                 robot.isWaiting = false; 
                 robot.isQueuing = false;
 
+                // HANYA DIPROSES JIKA ROBOT MASIH MEMILIKI WAYPOINT UNTUK DITEMPUH (BELUM SAMPAI STAGING AREA)
                 if (robot.wpIndex < robot.waypoints.length) {
 
-                // Konsumsi Baterai Berdasarkan Waktu Simulasi
-                let currentDrain = (robot.speed === SPEED_MOWING_PX) ? BATT_DRAIN_MOWING : BATT_DRAIN_TRANSIT;
-                if (robot.battery > 0) {
-                    robot.battery -= currentDrain * simDeltaTime;
-                }
+                    // Perhitungan konsumsi baterai hanya berjalan saat robot aktif bertugas/bergerak
+                    let currentDrain = (robot.speed === SPEED_MOWING_PX) ? BATT_DRAIN_MOWING : BATT_DRAIN_TRANSIT;
+                    if (robot.battery > 0) {
+                        robot.battery -= currentDrain * simDeltaTime;
+                    }
 
-                // Failsafe Baterai Kritis (<= 20%)
-                if (robot.battery <= 20.0 && !robot.isLowBatteryRTL) {
-                    robot.isLowBatteryRTL = true;
-                    console.warn(`[GCS FAILSAFE] ${robot.id} Baterai Kritis (${robot.battery.toFixed(1)}%). Force RTL ke Staging!`);
-                    triggerRobotRTL(robot);
-                }
+                    // Failsafe Baterai Kritis (<= 20%)
+                    if (robot.battery <= 20.0 && !robot.isLowBatteryRTL) {
+                        robot.isLowBatteryRTL = true;
+                        console.warn(`[GCS FAILSAFE] ${robot.id} Baterai Kritis (${robot.battery.toFixed(1)}%). Force RTL ke Staging!`);
+                        triggerRobotRTL(robot);
+                    }
 
-                if (robot.wpIndex < robot.waypoints.length) {
                     robot.durationSeconds += simDeltaTime;
 
                     let target = robot.waypoints[robot.wpIndex];
