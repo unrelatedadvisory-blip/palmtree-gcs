@@ -1101,82 +1101,112 @@
         ctx.restore();
     }
 
- function updateWeedingPhysics(realDeltaTime) {
-    if (currentState === 'RUNNING' || currentState === 'RTH') {
-        let simDeltaTime = realDeltaTime * TIME_FACTOR; 
+    function updateRobotsPhysics(realDeltaTime) {
+        if (currentState === 'RUNNING' || currentState === 'RTH') {
+            let simDeltaTime = realDeltaTime * TIME_FACTOR; 
 
-        activeRobots.forEach((robot, index) => {
-            robot.isWaiting = false; 
-            robot.isQueuing = false;
+            activeRobots.forEach((robot, index) => {
+                robot.isWaiting = false; 
+                robot.isQueuing = false;
 
-            // ✅ DIPINDAHKAN: Hanya proses jika robot masih dalam rute/belum selesai
-            if (robot.wpIndex < robot.waypoints.length) {
-                
-                // 🔋 Konsumsi baterai khusus mode penyiangan (hanya berkurang saat robot aktif)
-                let currentDrain = (robot.speed === SPEED_WEEDING_PX) ? BATT_DRAIN_WEEDING : BATT_DRAIN_TRANSIT;
+                if (robot.wpIndex < robot.waypoints.length) {
+
+                // Kurasan Baterai
+                let currentDrain = (robot.speed === SPEED_MOWING_PX) ? BATT_DRAIN_MOWING : BATT_DRAIN_TRANSIT;
                 if (robot.battery > 0) {
                     robot.battery -= currentDrain * simDeltaTime;
                 }
 
-                // ⚠️ Failsafe Baterai Kritis (<= 20%)
+                // Failsafe Baterai Kritis
                 if (robot.battery <= 20.0 && !robot.isLowBatteryRTL) {
                     robot.isLowBatteryRTL = true;
-                    console.warn(`[WEEDING FAILSAFE] ${robot.id} Baterai Kritis (${robot.battery.toFixed(1)}%). Force RTL!`);
+                    console.warn(`[GCS FAILSAFE] ${robot.id} Baterai Kritis (${robot.battery.toFixed(1)}%). Mematikan pisau & RTL ke Staging!`);
                     triggerRobotRTL(robot);
                 }
 
-                robot.durationSeconds += simDeltaTime;
+                if (robot.wpIndex < robot.waypoints.length) {
+                    robot.durationSeconds += simDeltaTime;
 
-                let target = robot.waypoints[robot.wpIndex];
-                let dist = Math.hypot(target.x - robot.x, target.y - robot.y);
-                let currentSpeed = robot.speed * simDeltaTime; 
+                    let target = robot.waypoints[robot.wpIndex];
+                    let dist = Math.hypot(target.x - robot.x, target.y - robot.y);
+                    let currentSpeed = robot.speed * simDeltaTime; 
 
-                // --- Logika Collision Avoidance ---
-                const STOP_DISTANCE = 42;  
-                const QUEUE_DISTANCE = 120; 
+                    // === ZONA DETEKSI DAN YIELDING DINI MODE PENYIANGAN ===
+                    const STOP_DISTANCE = 42;   // Jarak fisik aman antarrobot (px)
+                    const QUEUE_DISTANCE = 95;  // Ditingkatkan ke 95px agar Yielding terjadi jauh lebih cepat
 
-                for (let j = 0; j < activeRobots.length; j++) {
-                    if (index === j) continue;
-                    let other = activeRobots[j];
-                    
-                    if (other.wpIndex < other.waypoints.length) {
-                        let distToOther = Math.hypot(other.x - robot.x, other.y - robot.y);
-                        let vx = target.x - robot.x;
-                        let vy = target.y - robot.y;
-                        let vox = other.x - robot.x;
-                        let voy = other.y - robot.y;
-                        let dotProduct = (vx * vox + vy * voy);
+                    for (let j = 0; j < activeRobots.length; j++) {
+                        if (index === j) continue;
+                        let other = activeRobots[j];
+                        
+                        if (other.wpIndex < other.waypoints.length) {
+                            // 1. Jarak Fisik Riil Saat Ini
+                            let distToOther = Math.hypot(other.x - robot.x, other.y - robot.y);
+                            
+                            // 2. Prediksi Posisi Masa Depan (Look-ahead) untuk Mencegah Keterlambatan Respon
+                            let nextRobotX = robot.x + ((target.x - robot.x) / (dist || 1)) * currentSpeed;
+                            let nextRobotY = robot.y + ((target.y - robot.y) / (dist || 1)) * currentSpeed;
+                            
+                            let otherTarget = other.waypoints[other.wpIndex];
+                            let otherDist = Math.hypot(otherTarget.x - other.x, otherTarget.y - other.y) || 1;
+                            let otherSpeed = other.speed * simDeltaTime;
+                            let nextOtherX = other.x + ((otherTarget.x - other.x) / otherDist) * otherSpeed;
+                            let nextOtherY = other.y + ((otherTarget.y - other.y) / otherDist) * otherSpeed;
 
-                        if (index > j && dotProduct > 0) {
-                            if (distToOther < QUEUE_DISTANCE) {
-                                robot.isQueuing = true;
-                                if (distToOther <= STOP_DISTANCE) {
-                                    currentSpeed = 0;
-                                    robot.isWaiting = true;
-                                    break; 
-                                } else {
-                                    let factor = (distToOther - STOP_DISTANCE) / (QUEUE_DISTANCE - STOP_DISTANCE);
-                                    currentSpeed = Math.min(currentSpeed, (robot.speed * simDeltaTime) * factor);
+                            let futureDist = Math.hypot(nextOtherX - nextRobotX, nextOtherY - nextRobotY);
+
+                            // Vektor Arah Pergerakan (Mengecek Apakah Robot Lain Berada di Depan)
+                            let vx = target.x - robot.x;
+                            let vy = target.y - robot.y;
+                            let vox = other.x - robot.x;
+                            let voy = other.y - robot.y;
+                            let dotProduct = (vx * vox + vy * voy); 
+
+                            // Prioritas Berdasarkan Urutan Indeks
+                            if (index > j && (dotProduct > 0 || futureDist < STOP_DISTANCE)) {
+                                let effectiveDist = Math.min(distToOther, futureDist);
+
+                                if (effectiveDist < QUEUE_DISTANCE) {
+                                    robot.isQueuing = true;
+                                    
+                                    if (effectiveDist <= STOP_DISTANCE) {
+                                        // Berhenti Total Sebelum Terjadi Gesekan
+                                        currentSpeed = 0;
+                                        robot.isWaiting = true;
+                                        break; 
+                                    } else {
+                                        // Kurva Pengereman Responsif Dini
+                                        let factor = (effectiveDist - STOP_DISTANCE) / (QUEUE_DISTANCE - STOP_DISTANCE);
+                                        let smoothFactor = Math.pow(factor, 1.5); 
+                                        currentSpeed = Math.min(currentSpeed, (robot.speed * simDeltaTime) * smoothFactor);
+                                    }
                                 }
                             }
                         }
                     }
-                }
 
-                // Pergerakan Posisi Robot
-                if (currentSpeed > 0) {
-                    if (dist <= currentSpeed) { 
-                        robot.x = target.x;
-                        robot.y = target.y;
-                        robot.wpIndex++; 
-                    } else {
-                        robot.x += ((target.x - robot.x) / dist) * currentSpeed;
-                        robot.y += ((target.y - robot.y) / dist) * currentSpeed;
-                        robot.currentAngle = Math.atan2(target.y - robot.y, target.x - robot.x) - Math.PI / 2;
+                    // Eksekusi Pergerakan Robot
+                    if (currentSpeed > 0) {
+                        if (dist <= currentSpeed) { 
+                            robot.x = target.x;
+                            robot.y = target.y;
+                            robot.wpIndex++; 
+                        } else {
+                            robot.x += ((target.x - robot.x) / dist) * currentSpeed;
+                            robot.y += ((target.y - robot.y) / dist) * currentSpeed;
+                            robot.currentAngle = Math.atan2(target.y - robot.y, target.x - robot.x) - Math.PI / 2;
+                        }
                     }
                 }
+            });
+            
+            let allDone = activeRobots.every(r => r.wpIndex >= r.waypoints.length);
+            if (allDone && activeRobots.length > 0 && currentState !== 'IDLE') {
+                currentState = 'ENDED';
+                updateControlButtonsUI();
             }
-        });
+        }
+    }
         
         // Cek jika seluruh robot sudah selesai
         let allDone = activeRobots.every(r => r.wpIndex >= r.waypoints.length);
