@@ -1026,6 +1026,8 @@
                 robot.isWaiting = false; 
                 robot.isQueuing = false;
 
+                if (robot.wpIndex < robot.waypoints.length) {
+
                 // Konsumsi Baterai Berdasarkan Waktu Simulasi
                 let currentDrain = (robot.speed === SPEED_MOWING_PX) ? BATT_DRAIN_MOWING : BATT_DRAIN_TRANSIT;
                 if (robot.battery > 0) {
