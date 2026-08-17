@@ -2,20 +2,20 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mode Penyiangan | PALM TREE GCS SIMULATOR</title>
-    <link rel="icon" type="image/png" href="images/logo.png">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Mode Penyiangan | PALM TREE GCS SIMULATOR</title>
+        <link rel="icon" type="image/png" href="images/logo.png">
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
         
         ::-webkit-scrollbar{
             width: 5px;
-            height: 6px;
+            height: auto;
         }
 
         ::-webkit-scrollbar-track{
-            background: transparent;
+            background: none;
             border-radius: 10px;
         }
 
@@ -31,8 +31,8 @@
         
         :root {
             --bg-main: #070a13;
-            --bg-sidebar: #0f172a;
-            --bg-card: #0f172a;
+            --bg-sidebar: #0d111b;
+            --bg-card: #111622;
             --bg-input: #070a13;
             --border-color: #1e2638;
             --text-primary: #ffffff;
@@ -65,7 +65,6 @@
             gap: 16px;
             box-sizing: border-box;
             overflow-y: auto;
-            flex-shrink: 0;
         }
 
         .sidebar img {
@@ -178,7 +177,6 @@
         .btn-ctrl a {
             color: #ffffff;
             text-decoration: none;
-            display: block;
         }
         
         #btnStart { background-color: var(--green-accent); }
@@ -194,7 +192,6 @@
             background-color: var(--bg-main);
             box-sizing: border-box;
             min-width: 0;
-            overflow-y: auto;
         }
 
         .map-area {
@@ -204,8 +201,6 @@
             align-items: center;
             padding: 10px;
             box-sizing: border-box;
-            overflow: auto;
-            width: 100%;
         }
 
         canvas {
@@ -213,9 +208,6 @@
             border: 1px solid var(--border-color);
             border-radius: 6px;
             box-shadow: 0 4px 25px rgba(0,0,0,0.7);
-            max-width: 100%;
-            height: auto;
-            display: block;
         }
 
         .matrix-panel {
@@ -227,7 +219,6 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
-            flex-shrink: 0;
         }
 
         .matrix-header {
@@ -246,9 +237,6 @@
             gap: 12px;
             width: 100%;
             box-sizing: border-box;
-            overflow-x: auto;
-            padding-bottom: 6px;
-            -webkit-overflow-scrolling: touch;
         }
 
         .agent-card {
@@ -350,54 +338,6 @@
             border-radius: 4px;
             display: none;
             border: 1px solid rgba(239, 68, 68, 0.2);
-        }
-
-        /* ==========================================================================
-           PENYESUaian RESPONSIF UNTUK SMARTPHONE DAN TABLET (<= 992px)
-           ========================================================================== */
-        @media (max-width: 992px) {
-            body {
-                flex-direction: column;
-                height: auto;
-                min-height: 100vh;
-                overflow-y: auto;
-            }
-
-            .sidebar {
-                width: 100%;
-                border-right: none;
-                border-bottom: 1px solid var(--border-color);
-                max-height: none;
-            }
-
-            .workspace {
-                width: 100%;
-                height: auto;
-            }
-
-            .map-area {
-                padding: 8px 4px;
-            }
-
-            canvas {
-                width: 100%;
-                height: auto;
-                max-width: 100%;
-            }
-
-            .matrix-panel {
-                height: auto;
-                padding: 12px 15px;
-            }
-
-            .matrix-grid {
-                flex-wrap: nowrap;
-                overflow-x: auto;
-            }
-
-            .agent-card {
-                min-width: 200px;
-            }
         }
     </style>
 </head>
@@ -1109,20 +1049,22 @@
                 robot.isWaiting = false; 
                 robot.isQueuing = false;
 
-                // Kurasan Baterai
-                let currentDrain = (robot.speed === SPEED_MOWING_PX) ? BATT_DRAIN_MOWING : BATT_DRAIN_TRANSIT;
-                if (robot.battery > 0) {
-                    robot.battery -= currentDrain * simDeltaTime;
-                }
-
-                // Failsafe Baterai Kritis
-                if (robot.battery <= 20.0 && !robot.isLowBatteryRTL) {
-                    robot.isLowBatteryRTL = true;
-                    console.warn(`[GCS FAILSAFE] ${robot.id} Baterai Kritis (${robot.battery.toFixed(1)}%). Mematikan pisau & RTL ke Staging!`);
-                    triggerRobotRTL(robot);
-                }
-
+                // HANYA DIPROSES JIKA ROBOT MASIH MEMILIKI WAYPOINT (BELUM SAMPAI STAGING AREA)
                 if (robot.wpIndex < robot.waypoints.length) {
+
+                    // Kurasan Baterai (Hanya aktif saat robot bertugas)
+                    let currentDrain = (robot.speed === SPEED_MOWING_PX) ? BATT_DRAIN_MOWING : BATT_DRAIN_TRANSIT;
+                    if (robot.battery > 0) {
+                        robot.battery -= currentDrain * simDeltaTime;
+                    }
+
+                    // Failsafe Baterai Kritis
+                    if (robot.battery <= 20.0 && !robot.isLowBatteryRTL) {
+                        robot.isLowBatteryRTL = true;
+                        console.warn(`[GCS FAILSAFE] ${robot.id} Baterai Kritis (${robot.battery.toFixed(1)}%). Mematikan pisau & RTL ke Staging!`);
+                        triggerRobotRTL(robot);
+                    }
+
                     robot.durationSeconds += simDeltaTime;
 
                     let target = robot.waypoints[robot.wpIndex];
@@ -1160,7 +1102,7 @@
                             let voy = other.y - robot.y;
                             let dotProduct = (vx * vox + vy * voy); 
 
-                            // Prioritas Berdasarkan Urutan Indeks
+                            // Prioritas Berdasarkan Urutan Indeks: Index lebih besar Wajib Mengalah pada Index lebih kecil
                             if (index > j && (dotProduct > 0 || futureDist < STOP_DISTANCE)) {
                                 let effectiveDist = Math.min(distToOther, futureDist);
 
@@ -1205,15 +1147,7 @@
             }
         }
     }
-        
-        // Cek jika seluruh robot sudah selesai
-        let allDone = activeRobots.every(r => r.wpIndex >= r.waypoints.length);
-        if (allDone && activeRobots.length > 0 && currentState !== 'IDLE') {
-            currentState = 'ENDED';
-            updateControlButtonsUI();
-        }
-    }
-}
+
     function drawSimulationEntities() {
         if (currentState === 'IDLE') {
             const count = parseInt(robotCountInput.value) || 0;
