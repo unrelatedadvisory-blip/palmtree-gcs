@@ -332,6 +332,30 @@
             display: none;
             border: 1px solid rgba(239, 68, 68, 0.2);
         }
+
+        @media (max-width: 868px) {
+            body {
+                flex-direction: column;
+                height: auto;
+                min-height: 100vh;
+                overflow-y: auto;
+            }
+    
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                overflow-y: visible;
+            }
+    
+            .workspace {
+                overflow-y: visible;
+            }
+    
+            .map-area {
+                padding: 5px;
+            }
+        }
     </style>
 </head>
 <body>
