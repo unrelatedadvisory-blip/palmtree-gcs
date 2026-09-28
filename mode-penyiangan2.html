@@ -812,7 +812,7 @@
         if (robot.isLowBatteryRTL) return 'LOW BATT - DOCKING';
         if (state === 'PAUSED') return 'PAUSED';
         if (state === 'IDLE') return 'STANDBY / INACTIVE';
-        if (robot.wpIndex >= robot.waypoints.length && robot.waypoints.length > 0) return 'FINISHED';
+        if (robot.wpIndex >= robot.waypoints.length && robot.waypoints.length > 0) return 'MISSION FINISHED';
         if (state === 'ENDED') return 'MISSION COMPLETED';
         if (robot.isWaiting) return 'QUEUE / WAITING';
         if (robot.isQueuing) return 'QUEUING / FOLLOWING';
