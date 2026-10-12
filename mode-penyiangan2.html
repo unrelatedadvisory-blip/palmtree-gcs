@@ -475,8 +475,8 @@
     const SPEED_MOWING_PX = 0.50 / METERS_PER_PIXEL; 
     const SPEED_TRANSIT_PX = 0.65 / METERS_PER_PIXEL; 
 
-    const BATT_DRAIN_MOWING = 100 / (8 * 3600); 
-    const BATT_DRAIN_TRANSIT = 100 / (16 * 3600); 
+    const BATT_DRAIN_MOWING = (100 / (8 * 3600)) * (0.50 / 0.35); 
+    const BATT_DRAIN_TRANSIT = 100 / (16 * 3600) * (0.65 / 0.50); 
 
     const SCALE_METER_TO_PX = 5.8; 
     const TREE_SPACING_M = 9.0;    
