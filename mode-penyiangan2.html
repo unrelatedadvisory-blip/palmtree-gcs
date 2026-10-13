@@ -447,7 +447,7 @@
         </div>
 
         <div class="matrix-panel">
-            <div class="matrix-header"><span style="color:var(--cyan-accent); font-size:10px;">●</span> Real-Time Robot Performance Monitoring Matrix (High Capacity Battery: 6Ah)</div>
+            <div class="matrix-header"><span style="color:var(--cyan-accent); font-size:10px;">●</span> Real-Time Robot Performance Monitoring Matrix (High Capacity Battery: 10Ah)</div>
             <div class="matrix-grid" id="matrixGrid"></div>
         </div>
     </div>
@@ -475,8 +475,8 @@
     const SPEED_MOWING_PX = 0.35 / METERS_PER_PIXEL; 
     const SPEED_TRANSIT_PX = 0.50 / METERS_PER_PIXEL; 
 
-    const BATT_DRAIN_MOWING = 100 / (240 * 60);
-    const BATT_DRAIN_TRANSIT = 100 / (300 * 60);
+	const BATT_DRAIN_MOWING = (100 / (400 * 60));
+	const BATT_DRAIN_TRANSIT = (100 / (480 * 60));
 
     const SCALE_METER_TO_PX = 5.8; 
     const TREE_SPACING_M = 9.0;    
@@ -858,7 +858,7 @@
                     <div style="color: #94a3b8;">DISTANCE: ${robot ? robot.totalDistanceMeters.toFixed(1) : 0}m</div>
                     <div class="battery-container">
                         <div style="display:flex; justify-content:space-between; font-size:0.65rem; color:var(--text-muted);">
-                            <span>BATT (6Ah)</span> <span id="batt-txt-${i}">${batteryVal.toFixed(1)}%</span>
+                            <span>BATT (10Ah)</span> <span id="batt-txt-${i}">${batteryVal.toFixed(1)}%</span>
                         </div>
                         <div class="bar-bg"><div class="bar-fill" id="batt-bar-${i}" style="width: ${batteryVal}%;"></div></div>
                     </div>
